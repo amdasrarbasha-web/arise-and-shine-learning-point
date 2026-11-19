@@ -1,0 +1,598 @@
+{
+  "centerInfo": {
+    "name": "ARISE AND SHINE LEARNING POINT",
+    "location": "ARISE AND SHINE LEARNING POINT, Melvisharam",
+    "mapsUrl": "https://maps.app.goo.gl/HvDyLK4yPX7bpAeF9?g_st=ic",
+    "phones": [
+      "6379840006",
+      "9842385666"
+    ],
+    "email": "contact.ariseandshine@gmail.com",
+    "timings": "Mon - Sat: 5:00 PM - 9:30 PM | Special Sunday Batches",
+    "classes": "Classes LKG to 12th Std (State Board, Matriculation & CBSE)",
+    "director": "Mr. Asrar Basha & Academic Faculty"
+  },
+  "admin": {
+    "username": "admin",
+    "password": "admin123",
+    "name": "Center Director / Head Tutor"
+  },
+  "students": [
+    {
+      "id": "ASLP-101",
+      "password": "pass101",
+      "name": "Mohammed Rehan",
+      "gender": "Male",
+      "photo": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=240&auto=format&fit=crop&q=80",
+      "grade": "Class 10 - State Board",
+      "school": "Islamiah Higher Secondary School, Melvisharam",
+      "parentName": "Tariq Ahmed",
+      "parentPhone": "9842385666",
+      "studentPhone": "6379840006",
+      "rollNo": "10-A-24",
+      "joinDate": "2026-06-12",
+      "attendance": {
+        "totalClasses": 54,
+        "attendedClasses": 51,
+        "percentage": 94.4,
+        "todayStatus": "Present",
+        "recentHistory": [
+          {
+            "date": "2026-11-19",
+            "status": "Present",
+            "note": "On time, active participation"
+          },
+          {
+            "date": "2026-11-18",
+            "status": "Present",
+            "note": "On time"
+          },
+          {
+            "date": "2026-11-17",
+            "status": "Present",
+            "note": "Maths quiz attended"
+          },
+          {
+            "date": "2026-11-16",
+            "status": "Late",
+            "note": "Late by 15 mins with note"
+          },
+          {
+            "date": "2026-11-15",
+            "status": "Present",
+            "note": "Sunday special session"
+          }
+        ]
+      },
+      "behaviour": {
+        "score": 95,
+        "grade": "A+",
+        "disciplineRating": 4.9,
+        "participationRating": 4.8,
+        "homeworkCompletion": 96,
+        "teacherRemarks": "Exceptional focus in Mathematics & Science. Respectful towards teachers and always helps peers.",
+        "badges": [
+          "Punctual",
+          "Math Star",
+          "High Discipline"
+        ]
+      },
+      "fee": {
+        "monthlyFee": 1333,
+        "status": "PAID",
+        "lastPaidDate": "2026-11-19",
+        "receiptNo": "ASLP-REC-76192",
+        "nextDueDate": "2026-02-12",
+        "paymentMode": "GPay",
+        "notes": "Paid on time for November 2026"
+      }
+    },
+    {
+      "id": "ASLP-102",
+      "password": "pass102",
+      "name": "Ayesha Fathima",
+      "gender": "Female",
+      "photo": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=240&auto=format&fit=crop&q=80",
+      "grade": "Class 12 - CBSE Science",
+      "school": "Al-Huda Matriculation Higher Secondary School",
+      "parentName": "Shabana Begum",
+      "parentPhone": "9894123456",
+      "studentPhone": "9842111222",
+      "rollNo": "12-S-08",
+      "joinDate": "2026-05-18",
+      "attendance": {
+        "totalClasses": 58,
+        "attendedClasses": 56,
+        "percentage": 96.5,
+        "todayStatus": "Present",
+        "recentHistory": [
+          {
+            "date": "2026-11-19",
+            "status": "Present",
+            "note": "Completed Physics numericals"
+          },
+          {
+            "date": "2026-11-18",
+            "status": "Present",
+            "note": "Chemistry test top scorer"
+          },
+          {
+            "date": "2026-11-17",
+            "status": "Present",
+            "note": "On time"
+          },
+          {
+            "date": "2026-11-16",
+            "status": "Present",
+            "note": "On time"
+          },
+          {
+            "date": "2026-11-15",
+            "status": "Present",
+            "note": "Sunday doubt clearing"
+          }
+        ]
+      },
+      "behaviour": {
+        "score": 98,
+        "grade": "A+",
+        "disciplineRating": 5,
+        "participationRating": 4.9,
+        "homeworkCompletion": 99,
+        "teacherRemarks": "Role model student. Extremely dedicated towards Board exams preparation and Physics numericals.",
+        "badges": [
+          "Top Performer",
+          "Science Whiz",
+          "100% Homework"
+        ]
+      },
+      "fee": {
+        "monthlyFee": 1800,
+        "status": "PAID",
+        "lastPaidDate": "2026-11-02",
+        "receiptNo": "ASLP-REC-11009",
+        "nextDueDate": "2026-12-05",
+        "paymentMode": "Cash",
+        "notes": "Paid in full"
+      }
+    },
+    {
+      "id": "ASLP-103",
+      "password": "pass103",
+      "name": "Syed Farhan",
+      "gender": "Male",
+      "photo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=240&auto=format&fit=crop&q=80",
+      "grade": "Class 9 - State Board",
+      "school": "Islamiah Boy's Hr Sec School, Melvisharam",
+      "parentName": "Syed Musthaq",
+      "parentPhone": "9789123450",
+      "studentPhone": "9080123456",
+      "rollNo": "9-B-15",
+      "joinDate": "2026-07-01",
+      "attendance": {
+        "totalClasses": 50,
+        "attendedClasses": 42,
+        "percentage": 84,
+        "todayStatus": "Present",
+        "recentHistory": [
+          {
+            "date": "2026-11-19",
+            "status": "Present",
+            "note": "Active in English grammar"
+          },
+          {
+            "date": "2026-11-18",
+            "status": "Absent",
+            "note": "Informed: Sister wedding"
+          },
+          {
+            "date": "2026-11-17",
+            "status": "Absent",
+            "note": "Informed: Sister wedding"
+          },
+          {
+            "date": "2026-11-16",
+            "status": "Present",
+            "note": "On time"
+          },
+          {
+            "date": "2026-11-15",
+            "status": "Present",
+            "note": "Attended morning session"
+          }
+        ]
+      },
+      "behaviour": {
+        "score": 86,
+        "grade": "A",
+        "disciplineRating": 4.2,
+        "participationRating": 4.5,
+        "homeworkCompletion": 82,
+        "teacherRemarks": "Good potential and grasping speed. Needs to maintain regular attendance to keep pace in Geometry.",
+        "badges": [
+          "Creative Mind",
+          "Fast Learner"
+        ]
+      },
+      "fee": {
+        "monthlyFee": 1200,
+        "status": "PENDING",
+        "lastPaidDate": "2026-10-08",
+        "receiptNo": "ASLP-REC-10088",
+        "nextDueDate": "2026-11-25",
+        "paymentMode": "Pending",
+        "notes": "November month fee pending. Friendly reminder sent."
+      }
+    },
+    {
+      "id": "ASLP-104",
+      "password": "pass104",
+      "name": "Zoya Mariyam",
+      "gender": "Female",
+      "photo": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=240&auto=format&fit=crop&q=80",
+      "grade": "Class 8 - Matriculation",
+      "school": "Goodlet Matriculation Higher Secondary School",
+      "parentName": "Khadija Banu",
+      "parentPhone": "9443123456",
+      "studentPhone": "9443654321",
+      "rollNo": "8-A-04",
+      "joinDate": "2026-06-20",
+      "attendance": {
+        "totalClasses": 52,
+        "attendedClasses": 49,
+        "percentage": 94.2,
+        "todayStatus": "Present",
+        "recentHistory": [
+          {
+            "date": "2026-11-19",
+            "status": "Present",
+            "note": "Submitted Science worksheet"
+          },
+          {
+            "date": "2026-11-18",
+            "status": "Present",
+            "note": "On time"
+          },
+          {
+            "date": "2026-11-17",
+            "status": "Present",
+            "note": "On time"
+          },
+          {
+            "date": "2026-11-16",
+            "status": "Present",
+            "note": "On time"
+          },
+          {
+            "date": "2026-11-15",
+            "status": "Late",
+            "note": "Late 10 mins"
+          }
+        ]
+      },
+      "behaviour": {
+        "score": 92,
+        "grade": "A+",
+        "disciplineRating": 4.8,
+        "participationRating": 4.6,
+        "homeworkCompletion": 94,
+        "teacherRemarks": "Well mannered and attentive. Shows strong interest in Science experiments and social studies.",
+        "badges": [
+          "Diligent",
+          "Well Behaved"
+        ]
+      },
+      "fee": {
+        "monthlyFee": 1100,
+        "status": "PAID",
+        "lastPaidDate": "2026-11-04",
+        "receiptNo": "ASLP-REC-11019",
+        "nextDueDate": "2026-12-05",
+        "paymentMode": "PhonePe",
+        "notes": "Paid for Nov 2026"
+      }
+    },
+    {
+      "id": "ASLP-105",
+      "password": "pass105",
+      "name": "K. Vignesh",
+      "gender": "Male",
+      "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=240&auto=format&fit=crop&q=80",
+      "grade": "Class 11 - State Board Bio-Maths",
+      "school": "Government Boys Higher Secondary School, Ranipet",
+      "parentName": "Kumaravel M.",
+      "parentPhone": "9629123456",
+      "studentPhone": "9629876543",
+      "rollNo": "11-BM-32",
+      "joinDate": "2026-06-05",
+      "attendance": {
+        "totalClasses": 55,
+        "attendedClasses": 48,
+        "percentage": 87.2,
+        "todayStatus": "Present",
+        "recentHistory": [
+          {
+            "date": "2026-11-19",
+            "status": "Present",
+            "note": "Attended Botany problem solving"
+          },
+          {
+            "date": "2026-11-18",
+            "status": "Present",
+            "note": "On time"
+          },
+          {
+            "date": "2026-11-17",
+            "status": "Late",
+            "note": "Bus delay 20 mins"
+          },
+          {
+            "date": "2026-11-16",
+            "status": "Present",
+            "note": "On time"
+          },
+          {
+            "date": "2026-11-15",
+            "status": "Absent",
+            "note": "Fever"
+          }
+        ]
+      },
+      "behaviour": {
+        "score": 88,
+        "grade": "A",
+        "disciplineRating": 4.5,
+        "participationRating": 4.3,
+        "homeworkCompletion": 85,
+        "teacherRemarks": "Very polite and attentive in class. Needs to submit homework more regularly.",
+        "badges": [
+          "Respectful",
+          "Curious Learner"
+        ]
+      },
+      "fee": {
+        "monthlyFee": 1600,
+        "status": "PAID",
+        "lastPaidDate": "2026-11-08",
+        "receiptNo": "ASLP-REC-11045",
+        "nextDueDate": "2026-12-08",
+        "paymentMode": "GPay",
+        "notes": "Payment verified"
+      }
+    },
+    {
+      "id": "ASLP-106",
+      "password": "pass106",
+      "name": "Afreen Tabassum",
+      "gender": "Female",
+      "photo": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=240&auto=format&fit=crop&q=80",
+      "grade": "Class 10 - Matriculation",
+      "school": "Islamiah Girls Higher Secondary School, Melvisharam",
+      "parentName": "Junaid Pasha",
+      "parentPhone": "9843987654",
+      "studentPhone": "9843112233",
+      "rollNo": "10-G-19",
+      "joinDate": "2026-06-15",
+      "attendance": {
+        "totalClasses": 54,
+        "attendedClasses": 52,
+        "percentage": 96.2,
+        "todayStatus": "Present",
+        "recentHistory": [
+          {
+            "date": "2026-11-19",
+            "status": "Present",
+            "note": "Social science quiz completed"
+          },
+          {
+            "date": "2026-11-18",
+            "status": "Present",
+            "note": "On time"
+          },
+          {
+            "date": "2026-11-17",
+            "status": "Present",
+            "note": "On time"
+          },
+          {
+            "date": "2026-11-16",
+            "status": "Present",
+            "note": "On time"
+          },
+          {
+            "date": "2026-11-15",
+            "status": "Present",
+            "note": "Sunday special"
+          }
+        ]
+      },
+      "behaviour": {
+        "score": 96,
+        "grade": "A+",
+        "disciplineRating": 4.9,
+        "participationRating": 4.7,
+        "homeworkCompletion": 98,
+        "teacherRemarks": "Excellent handwriting, neat note-taking, and consistent top marks in weekly unit tests.",
+        "badges": [
+          "Top Scorer",
+          "Neat Notes",
+          "Consistent"
+        ]
+      },
+      "fee": {
+        "monthlyFee": 1500,
+        "status": "PENDING",
+        "lastPaidDate": "2026-10-10",
+        "receiptNo": "ASLP-REC-10112",
+        "nextDueDate": "2026-11-28",
+        "paymentMode": "Pending",
+        "notes": "November fee due date approaching on 28th Nov"
+      }
+    }
+  ],
+  "announcements": [
+    {
+      "id": "ANN-101",
+      "title": "Half-Yearly Board Model Exam Series 2026 [Updated]",
+      "content": "Special Model Examination series for Class 10 and 12 will commence from December 1st. Timings revised: 5:00 PM to 9:30 PM. Hall tickets will be issued tomorrow.",
+      "category": "Exam",
+      "target": "Class 10 & 12",
+      "date": "2026-11-18",
+      "isPinned": true,
+      "author": "Director - Arise & Shine",
+      "updatedAt": "2026-11-19"
+    },
+    {
+      "id": "ANN-102",
+      "title": "Sunday Special Doubt Clearance & Maths Marathon",
+      "content": "Special 3-hour revision marathon on Coordinate Geometry and Trigonometry this Sunday, 23rd November from 9:30 AM to 12:30 PM. Breakfast snack and formula booklet will be distributed.",
+      "category": "Schedule",
+      "target": "All Batches",
+      "date": "2026-11-16",
+      "isPinned": true,
+      "author": "Maths Faculty"
+    },
+    {
+      "id": "ANN-103",
+      "title": "Tuition Timings & Winter Schedule Notice",
+      "content": "Due to early sunset in winter, evening classes will start promptly at 5:00 PM and end by 8:15 PM. Parents are requested to ensure safe pickup at the tuition gate on time.",
+      "category": "Notice",
+      "target": "All Parents",
+      "date": "2026-11-12",
+      "isPinned": false,
+      "author": "Administration"
+    },
+    {
+      "id": "ANN-104",
+      "title": "Parent-Teacher Review Meeting (PTM)",
+      "content": "Monthly progress discussion with parents will be held on the last Saturday of November (29th Nov). Parents can review their ward's unit test answer sheets, attendance, and behaviour report directly.",
+      "category": "Important",
+      "target": "All Parents",
+      "date": "2026-11-10",
+      "isPinned": false,
+      "author": "Director"
+    }
+  ],
+  "homeworks": [
+    {
+      "id": "HW-1795109108373",
+      "studentId": "ASLP-101",
+      "studentName": "Mohammed Rehan",
+      "grade": "Class 10 - State Board",
+      "schoolName": "Islamiah Higher Secondary School, Melvisharam",
+      "subject": "Mathematics",
+      "description": "hi",
+      "photoUrl": "",
+      "submittedAt": "19/11/26, 10:55 pm",
+      "status": "Submitted",
+      "adminRemarks": ""
+    },
+    {
+      "id": "HW-1795107095974",
+      "studentId": "ASLP-101",
+      "studentName": "Mohammed Rehan",
+      "grade": "Class 10 - State Board",
+      "schoolName": "Islamiah Higher Secondary School, Melvisharam",
+      "subject": "Science - Chemistry",
+      "description": "hi",
+      "submissionDueDate": "2026-11-21",
+      "photoUrl": "",
+      "submittedAt": "19/11/26, 10:21 pm",
+      "status": "Submitted",
+      "adminRemarks": ""
+    },
+    {
+      "id": "HW-501",
+      "studentId": "ASLP-101",
+      "studentName": "Mohammed Rehan",
+      "grade": "Class 10 - State Board",
+      "schoolName": "Islamiah Higher Secondary School, Melvisharam",
+      "subject": "Mathematics",
+      "description": "School teacher gave Exercise 3.12 (Quadratic Equations Word Problems, Q1 to Q8). Need guidance in tuition to solve questions 5 and 7.",
+      "photoUrl": "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=800&auto=format&fit=crop&q=80",
+      "submittedAt": "2026-11-19 18:20",
+      "status": "Reviewed",
+      "adminRemarks": "Problem 5 and 7 solved and explained step-by-step during tuition. Rehan has understood the quadratic formula substitution well."
+    },
+    {
+      "id": "HW-503",
+      "studentId": "ASLP-104",
+      "studentName": "Zoya Mariyam",
+      "grade": "Class 8 - Matriculation",
+      "schoolName": "Goodlet Matriculation Higher Secondary School",
+      "subject": "Science",
+      "description": "Diagram of Plant and Animal Cell with labeling of 10 organelles. Homework notebook picture attached.",
+      "photoUrl": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&auto=format&fit=crop&q=80",
+      "submittedAt": "2026-11-19 19:40",
+      "status": "Submitted",
+      "adminRemarks": "Received. Will supervise the cell organelle diagram labeling during tomorrow's tuition class."
+    }
+  ],
+  "feedbacks": [
+    {
+      "id": "FB-1795109131641",
+      "studentId": "ASLP-101",
+      "studentName": "Mohammed Rehan",
+      "parentName": "Tariq Ahmed",
+      "parentPhone": "9842385666",
+      "category": "Academics",
+      "message": "very good",
+      "submittedAt": "19/11/26, 10:55 pm",
+      "status": "Pending",
+      "adminReply": "",
+      "repliedAt": ""
+    },
+    {
+      "id": "FB-1795107116696",
+      "studentId": "ASLP-101",
+      "studentName": "Mohammed Rehan",
+      "parentName": "Tariq Ahmed",
+      "parentPhone": "9842385666",
+      "category": "Academics",
+      "message": "good",
+      "submittedAt": "19/11/26, 10:21 pm",
+      "status": "Pending",
+      "adminReply": "",
+      "repliedAt": ""
+    },
+    {
+      "id": "FB-701",
+      "studentId": "ASLP-101",
+      "studentName": "Mohammed Rehan",
+      "parentName": "Tariq Ahmed",
+      "parentPhone": "9842385666",
+      "category": "Academics",
+      "message": "Assalamu Alaikum sir, Rehan is doing well in tuition. Can you please give him extra practice questions for Tamil paper as his school teacher mentioned he needs improvement in Tamil paper grammar?",
+      "submittedAt": "2026-11-17 20:10",
+      "status": "Replied",
+      "adminReply": "Walaikum Assalam Tariq sir. Noted! We have arranged dedicated Tamil grammar worksheets for him starting this Wednesday. Our Tamil master will give special attention.",
+      "repliedAt": "2026-11-18 10:30"
+    },
+    {
+      "id": "FB-702",
+      "studentId": "ASLP-103",
+      "studentName": "Syed Farhan",
+      "parentName": "Syed Musthaq",
+      "parentPhone": "9789123450",
+      "category": "Fee Query",
+      "message": "Respected Sir, regarding November fee payment, our family had unexpected travel for sister's wedding. I will clear the tuition fee on or before 25th November. Please accommodate.",
+      "submittedAt": "2026-11-18 14:15",
+      "status": "Replied",
+      "adminReply": "Sure Musthaq sir, absolutely no problem. We have updated his due date to 25th November. Please ensure Farhan attends tomorrow's Geometry class on time.",
+      "repliedAt": "2026-11-18 16:00"
+    },
+    {
+      "id": "FB-703",
+      "studentId": "ASLP-105",
+      "studentName": "K. Vignesh",
+      "parentName": "Kumaravel M.",
+      "parentPhone": "9629123456",
+      "category": "Timings",
+      "message": "Sir, on Fridays Ranipet town bus is crowded. Vignesh might reach tuition 10 minutes late. Kindly allow him inside without penalty.",
+      "submittedAt": "2026-11-19 17:05",
+      "status": "Pending",
+      "adminReply": "",
+      "repliedAt": ""
+    }
+  ]
+}

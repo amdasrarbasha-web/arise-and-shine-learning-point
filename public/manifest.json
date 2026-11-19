@@ -1,0 +1,50 @@
+{
+  "id": "/?source=pwa",
+  "name": "ARISE AND SHINE LEARNING POINT",
+  "short_name": "Arise & Shine",
+  "description": "Official Student, Parent and Admin Portal for Arise and Shine Learning Point, Melvisharam.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Student & Parent App",
+      "short_name": "Students",
+      "description": "Access Student Profile, Attendance, Homework & Fee Status",
+      "url": "/student",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Admin Management Portal",
+      "short_name": "Admin",
+      "description": "Manage Students, Attendance, Homework Reviews & Fees",
+      "url": "/admin",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["education", "productivity"]
+}

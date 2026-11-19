@@ -1,0 +1,17 @@
+{
+  "appId": "com.ariseandshine.learningpoint",
+  "appName": "Arise and Shine Learning Point",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#0f172a",
+      "showSpinner": false
+    }
+  }
+}
