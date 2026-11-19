@@ -91,62 +91,47 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* Portal Switcher & Auth status */}
+        {/* Right side Actions (No Admin Tab in Student App) */}
         <div className="flex items-center space-x-3">
-          {/* Main App Switcher Tabs */}
-          <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200/90 shadow-inner">
-            <button
-              onClick={() => setCurrentPortal('student')}
-              className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
-                currentPortal === 'student'
-                  ? 'bg-white text-blue-700 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <GraduationCap className="w-4 h-4 text-blue-600" />
-              <span>Student / Parent App</span>
-              {activeStudent && (
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              )}
-            </button>
-
-            <button
-              onClick={() => setCurrentPortal('admin')}
-              className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
-                currentPortal === 'admin'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <ShieldCheck className="w-4 h-4 text-amber-400" />
-              <span>Admin Portal</span>
+          {currentPortal === 'student' ? (
+            // In Student & Parent App: Clean view with student status & logout only
+            activeStudent && (
+              <div className="flex items-center space-x-2">
+                <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-xl text-xs font-semibold border border-blue-200">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>{activeStudent.name}</span>
+                </span>
+                <button
+                  onClick={onStudentLogout}
+                  className="flex items-center space-x-1.5 text-xs text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-xl border border-rose-200 transition font-medium cursor-pointer"
+                  title="Sign Out of Student Account"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Logout</span>
+                </button>
+              </div>
+            )
+          ) : (
+            // In Admin App: Secure Admin Portal Header
+            <div className="flex items-center space-x-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-amber-400 rounded-xl text-xs font-bold border border-slate-700 shadow-xs">
+                <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                <span>Admin Portal</span>
+                {isAdminLoggedIn && (
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                )}
+              </span>
               {isAdminLoggedIn && (
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                <button
+                  onClick={onAdminLogout}
+                  className="flex items-center space-x-1.5 text-xs text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-xl border border-rose-200 transition font-medium cursor-pointer"
+                  title="Exit Admin Session"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Exit Admin</span>
+                </button>
               )}
-            </button>
-          </div>
-
-          {/* User state logout actions */}
-          {currentPortal === 'student' && activeStudent && (
-            <button
-              onClick={onStudentLogout}
-              className="flex items-center space-x-1.5 text-xs text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-lg border border-rose-200 transition font-medium cursor-pointer"
-              title="Sign Out of Student Account"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Logout</span>
-            </button>
-          )}
-
-          {currentPortal === 'admin' && isAdminLoggedIn && (
-            <button
-              onClick={onAdminLogout}
-              className="flex items-center space-x-1.5 text-xs text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-lg border border-rose-200 transition font-medium cursor-pointer"
-              title="Exit Admin Session"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Admin Exit</span>
-            </button>
+            </div>
           )}
         </div>
       </div>

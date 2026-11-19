@@ -200,20 +200,6 @@ export default function App() {
             <span>© {new Date().getFullYear()} ARISE AND SHINE LEARNING POINT. All Rights Reserved.</span>
             <div className="flex items-center space-x-3">
               <button 
-                onClick={() => handlePortalChange('student')} 
-                className="hover:text-slate-300 transition cursor-pointer"
-              >
-                Student / Parent App
-              </button>
-              <span>•</span>
-              <button 
-                onClick={() => handlePortalChange('admin')} 
-                className="hover:text-slate-300 transition cursor-pointer"
-              >
-                Admin Control Center
-              </button>
-              <span>•</span>
-              <button 
                 onClick={() => setIsInstallModalOpen(true)} 
                 className="text-amber-400 hover:text-amber-300 transition cursor-pointer font-bold"
               >
