@@ -552,9 +552,11 @@ app.get('/arise-and-shine.apk', (req, res) => {
   const targetApk = fs.existsSync(apkDist) ? apkDist : (fs.existsSync(apkPublic) ? apkPublic : null);
 
   if (targetApk) {
+    const stat = fs.statSync(targetApk);
     res.setHeader('Content-Type', 'application/vnd.android.package-archive');
     res.setHeader('Content-Disposition', 'attachment; filename="Arise-and-Shine.apk"');
-    return res.sendFile(targetApk);
+    res.setHeader('Content-Length', stat.size);
+    return fs.createReadStream(targetApk).pipe(res);
   }
   return res.status(404).send('APK is currently being packaged. Please try again shortly.');
 });
