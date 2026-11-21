@@ -3,11 +3,10 @@ import Navbar from './components/Navbar';
 import StudentApp from './components/StudentApp';
 import AdminApp from './components/AdminApp';
 import InstallAppModal from './components/InstallAppModal';
-import { Phone, MapPin, Sparkles, GraduationCap, ShieldCheck } from 'lucide-react';
+import { Phone, MapPin, Sparkles, GraduationCap, ShieldCheck, Smartphone, X } from 'lucide-react';
 
 export default function App() {
   // Current view: 'student' (Student & Parent App) or 'admin' (Admin Portal)
-  // Initializes directly based on the URL pathname (/admin vs / or /student)
   const [currentPortal, setCurrentPortal] = useState(() => {
     const path = window.location.pathname.toLowerCase();
     if (path.startsWith('/admin')) return 'admin';
@@ -23,7 +22,26 @@ export default function App() {
 
   // Mobile App Install Modal & PWA deferred prompt
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [deferredPrompt, setDeferredPrompt] = useState(() => {
+    return typeof window !== 'undefined' ? window.deferredPrompt || null : null;
+  });
+
+  // Standalone app detection (true when opened as installed app from phone screen or desktop)
+  const [isStandaloneApp, setIsStandaloneApp] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return (
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.matchMedia('(display-mode: fullscreen)').matches ||
+      window.navigator.standalone === true ||
+      document.referrer.includes('android-app://') ||
+      window.location.search.includes('mode=standalone')
+    );
+  });
+
+  // User dismissed top banner for this session
+  const [isBannerDismissed, setIsBannerDismissed] = useState(() => {
+    return typeof sessionStorage !== 'undefined' && sessionStorage.getItem('arise_install_banner_dismissed') === 'true';
+  });
 
   // Tuition Center Details
   const [centerInfo, setCenterInfo] = useState({
@@ -49,14 +67,40 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Capture PWA install prompt for 1-click mobile install
+  // Sync PWA install prompt & standalone detection
   useEffect(() => {
-    const handleBeforeInstallPrompt = (e) => {
+    const syncPrompt = () => {
+      if (window.deferredPrompt) {
+        setDeferredPrompt(window.deferredPrompt);
+      }
+    };
+    syncPrompt();
+    window.addEventListener('pwa-prompt-ready', syncPrompt);
+
+    const handleBeforeInstall = (e) => {
       e.preventDefault();
+      window.deferredPrompt = e;
       setDeferredPrompt(e);
     };
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+
+    const mediaQuery = window.matchMedia('(display-mode: standalone)');
+    const handleModeChange = (e) => setIsStandaloneApp(e.matches);
+    mediaQuery.addEventListener('change', handleModeChange);
+
+    const handleAppInstalled = () => {
+      setIsStandaloneApp(true);
+      setDeferredPrompt(null);
+      if (typeof window !== 'undefined') window.deferredPrompt = null;
+    };
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    return () => {
+      window.removeEventListener('pwa-prompt-ready', syncPrompt);
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+      mediaQuery.removeEventListener('change', handleModeChange);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
   }, []);
 
   // Fetch center info and restore active student session on mount
@@ -68,7 +112,6 @@ export default function App() {
       })
       .catch(err => console.error('Error fetching center info:', err));
 
-    // Restore saved student profile from memory
     const savedStudentId = localStorage.getItem('arise_active_student_id');
     if (savedStudentId) {
       fetch(`/api/students/${savedStudentId}`)
@@ -122,7 +165,44 @@ export default function App() {
         isAdminLoggedIn={isAdminLoggedIn}
         onAdminLogout={() => handleAdminLoginState(false)}
         onOpenInstallModal={() => setIsInstallModalOpen(true)}
+        isStandaloneApp={isStandaloneApp}
       />
+
+      {/* Prominent Install Prompt Banner (Visible ONLY when accessed via browser, hidden inside installed app) */}
+      {!isStandaloneApp && !isBannerDismissed && (
+        <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 px-4 py-2 text-xs font-semibold shadow-xs border-b border-amber-600/20">
+          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
+            <div className="flex items-center space-x-2">
+              <span className="p-1 bg-slate-950 text-amber-400 rounded-md shrink-0">
+                <Smartphone className="w-3.5 h-3.5" />
+              </span>
+              <span>
+                <strong>For the best experience:</strong> Install the official <strong>Arise & Shine App</strong> on your phone for full-screen access and instant updates!
+              </span>
+            </div>
+            <div className="flex items-center space-x-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setIsInstallModalOpen(true)}
+                className="bg-slate-950 hover:bg-slate-900 text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer shadow-xs"
+              >
+                Install App Now
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsBannerDismissed(true);
+                  sessionStorage.setItem('arise_install_banner_dismissed', 'true');
+                }}
+                className="p-1 text-slate-900 hover:text-slate-700 rounded transition cursor-pointer font-bold text-sm"
+                title="Dismiss Banner"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Body */}
       <main className="flex-1">
@@ -132,6 +212,8 @@ export default function App() {
             onLogout={handleStudentLogout}
             onLoginSuccess={handleStudentLogin}
             centerInfo={centerInfo}
+            isStandaloneApp={isStandaloneApp}
+            onOpenInstallModal={() => setIsInstallModalOpen(true)}
           />
         ) : (
           <AdminApp
@@ -198,14 +280,16 @@ export default function App() {
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500">
             <span>© {new Date().getFullYear()} ARISE AND SHINE LEARNING POINT. All Rights Reserved.</span>
-            <div className="flex items-center space-x-3">
-              <button 
-                onClick={() => setIsInstallModalOpen(true)} 
-                className="text-amber-400 hover:text-amber-300 transition cursor-pointer font-bold"
-              >
-                Download Mobile App
-              </button>
-            </div>
+            {!isStandaloneApp && (
+              <div className="flex items-center space-x-3">
+                <button 
+                  onClick={() => setIsInstallModalOpen(true)} 
+                  className="text-amber-400 hover:text-amber-300 transition cursor-pointer font-bold"
+                >
+                  Download Mobile App
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </footer>

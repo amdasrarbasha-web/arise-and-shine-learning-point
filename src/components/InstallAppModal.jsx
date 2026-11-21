@@ -9,25 +9,48 @@ import {
   Play, 
   ExternalLink,
   ShieldCheck,
-  GraduationCap
+  GraduationCap,
+  ArrowRight,
+  Info
 } from 'lucide-react';
 
 export default function InstallAppModal({ isOpen, onClose, deferredPrompt }) {
   const [isCopied, setIsCopied] = useState(false);
   const [installSuccess, setInstallSuccess] = useState(false);
+  const [activeTab, setActiveTab] = useState('auto'); // 'auto', 'iphone', 'android'
+
+  // Detect platform
+  const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isAndroid = typeof navigator !== 'undefined' && /Android/.test(navigator.userAgent);
+
+  useEffect(() => {
+    if (isIOS) setActiveTab('iphone');
+    else if (isAndroid) setActiveTab('android');
+    else setActiveTab('auto');
+  }, [isIOS, isAndroid]);
 
   if (!isOpen) return null;
 
   const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const choiceResult = await deferredPrompt.userChoice;
-      if (choiceResult.outcome === 'accepted') {
-        setInstallSuccess(true);
+    const promptToUse = deferredPrompt || (typeof window !== 'undefined' ? window.deferredPrompt : null);
+    
+    if (promptToUse) {
+      try {
+        promptToUse.prompt();
+        const choiceResult = await promptToUse.userChoice;
+        if (choiceResult && choiceResult.outcome === 'accepted') {
+          setInstallSuccess(true);
+          if (typeof window !== 'undefined') window.deferredPrompt = null;
+        }
+      } catch (err) {
+        console.error('PWA install prompt error:', err);
       }
     } else {
-      // If prompt isn't supported, guide user to browser menu
-      alert('To install on your phone:\n- Android Chrome: Tap menu (⋮) > "Install app" or "Add to Home screen"\n- iPhone Safari: Tap Share (⎋) > "Add to Home Screen"');
+      if (isIOS) {
+        setActiveTab('iphone');
+      } else {
+        setActiveTab('android');
+      }
     }
   };
 
@@ -36,7 +59,7 @@ export default function InstallAppModal({ isOpen, onClose, deferredPrompt }) {
     if (navigator.share) {
       navigator.share({
         title: 'Arise & Shine Learning Point App',
-        text: 'Download the official Arise & Shine Learning Point App for students, parents, and teachers.',
+        text: 'Install the official Arise & Shine Learning Point App on your phone for student profile, homework, and fee updates.',
         url: url,
       }).catch(() => {});
     } else {
@@ -47,19 +70,19 @@ export default function InstallAppModal({ isOpen, onClose, deferredPrompt }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-xs animate-fadeIn">
-      <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 overflow-hidden relative max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xs animate-fadeIn">
+      <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 overflow-hidden relative max-h-[92vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center space-x-3">
             <img 
               src="/logo.png" 
-              alt="Logo" 
+              alt="Arise & Shine Logo" 
               className="w-10 h-10 object-contain drop-shadow-sm" 
             />
             <div>
-              <h3 className="text-lg font-bold text-slate-900 leading-tight">Install Mobile Apps</h3>
-              <p className="text-xs text-slate-500">Google Play Store, App Store & Mobile Install</p>
+              <h3 className="text-lg font-bold text-slate-900 leading-tight">Install Official App</h3>
+              <p className="text-xs text-slate-500">Android, iPhone & Desktop Independent App</p>
             </div>
           </div>
           <button 
@@ -71,36 +94,17 @@ export default function InstallAppModal({ isOpen, onClose, deferredPrompt }) {
         </div>
 
         {/* Content */}
-        <div className="py-4 space-y-5">
-          {/* App Cards Preview */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 bg-blue-50/70 rounded-2xl border border-blue-100 text-center">
-              <div className="w-8 h-8 mx-auto bg-blue-600 text-white rounded-xl flex items-center justify-center mb-1.5 shadow-sm">
-                <GraduationCap className="w-4 h-4" />
-              </div>
-              <h4 className="text-xs font-bold text-blue-950">App 1: Student & Parent</h4>
-              <p className="text-[10px] text-blue-700/80 mt-0.5">Attendance, Homework & Fees</p>
-            </div>
-
-            <div className="p-3 bg-amber-50/70 rounded-2xl border border-amber-100 text-center">
-              <div className="w-8 h-8 mx-auto bg-slate-900 text-amber-400 rounded-xl flex items-center justify-center mb-1.5 shadow-sm">
-                <ShieldCheck className="w-4 h-4" />
-              </div>
-              <h4 className="text-xs font-bold text-amber-950">App 2: Admin Portal</h4>
-              <p className="text-[10px] text-amber-700/80 mt-0.5">Full Student & Fee Control</p>
-            </div>
-          </div>
-
-          {/* 1-Click Install Button */}
-          <div className="p-4 bg-gradient-to-br from-indigo-900 to-slate-900 text-white rounded-2xl shadow-md">
+        <div className="py-4 space-y-4">
+          {/* Main Action Banner */}
+          <div className="p-4 bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 text-white rounded-2xl shadow-md">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block mb-0.5">
-                  Instant Mobile Installation
+                  Standalone App Experience
                 </span>
-                <h4 className="text-sm font-bold">Add to Your Phone Screen</h4>
+                <h4 className="text-sm font-bold">Install to Your Phone Home Screen</h4>
                 <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                  Install both apps directly on your Android or iPhone. Operates full-screen with offline support and zero browser bars!
+                  Operates as a 100% individual app with no browser address bar, instant student notifications, camera uploads, and fast loading.
                 </p>
               </div>
               <div className="p-2.5 bg-white/10 rounded-xl shrink-0">
@@ -108,79 +112,153 @@ export default function InstallAppModal({ isOpen, onClose, deferredPrompt }) {
               </div>
             </div>
 
+            {/* Install Trigger Button */}
             <div className="mt-4 flex flex-wrap gap-2">
               <button
+                type="button"
                 onClick={handleInstallClick}
                 className="flex-1 py-2.5 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition cursor-pointer"
               >
                 <Download className="w-4 h-4" />
-                <span>{installSuccess ? 'App Installed!' : 'Install Mobile App Now'}</span>
+                <span>
+                  {installSuccess ? '✓ Installation Started!' : 'Install App Now'}
+                </span>
               </button>
 
               <button
+                type="button"
                 onClick={handleShareApp}
                 className="py-2.5 px-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
                 title="Share link with parents via WhatsApp"
               >
                 <Share2 className="w-3.5 h-3.5" />
-                <span>{isCopied ? 'Link Copied!' : 'Share App'}</span>
+                <span>{isCopied ? 'Copied Link!' : 'Share Link'}</span>
               </button>
             </div>
           </div>
 
-          {/* Platform Specific Guides */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-              Step-by-Step Mobile Instructions
-            </h4>
+          {/* Device Tabs */}
+          <div className="flex border-b border-slate-200 text-xs font-bold">
+            <button
+              type="button"
+              onClick={() => setActiveTab('iphone')}
+              className={`flex-1 py-2 text-center border-b-2 transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                activeTab === 'iphone'
+                  ? 'border-indigo-600 text-indigo-700 bg-indigo-50/50 rounded-t-xl'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              <Apple className="w-3.5 h-3.5" />
+              <span>iPhone (iOS)</span>
+            </button>
 
-            {/* Android Guide */}
-            <div className="p-3.5 rounded-2xl border border-slate-200 bg-slate-50 flex items-start space-x-3">
-              <div className="p-2 bg-emerald-100 text-emerald-700 rounded-xl shrink-0">
-                <Play className="w-4 h-4" />
+            <button
+              type="button"
+              onClick={() => setActiveTab('android')}
+              className={`flex-1 py-2 text-center border-b-2 transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                activeTab === 'android'
+                  ? 'border-indigo-600 text-indigo-700 bg-indigo-50/50 rounded-t-xl'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              <Play className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Android Phones</span>
+            </button>
+          </div>
+
+          {/* TAB 1: IPHONE INSTRUCTIONS */}
+          {activeTab === 'iphone' && (
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+              <div className="flex items-center gap-2 text-slate-900 font-bold text-xs pb-1 border-b border-slate-200">
+                <Apple className="w-4 h-4 text-slate-800" />
+                <span>How to Install on iPhone / iPad (Safari)</span>
               </div>
-              <div className="text-xs">
-                <span className="font-bold text-slate-900 block">Android & Google Chrome:</span>
-                <p className="text-slate-600 mt-0.5 leading-relaxed">
-                  1. Open this website in Chrome on your phone.<br />
-                  2. Tap the <strong>three dots (⋮)</strong> menu at the top right.<br />
-                  3. Select <strong>"Install app"</strong> or <strong>"Add to Home screen"</strong>.<br />
-                  4. The official Arise & Shine app icon will appear on your app drawer!
-                </p>
+
+              <div className="p-2.5 bg-blue-50 border border-blue-200 rounded-xl text-[11px] text-blue-900 flex items-start gap-2">
+                <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                <span>
+                  <strong>Why no direct APK?</strong> Apple strictly blocks third-party file downloads for iPhone security. Instead, Apple has built-in <strong>Web App Installation</strong> directly inside Safari that turns this into a standalone native app!
+                </span>
               </div>
+
+              <ol className="space-y-2.5 text-xs text-slate-700">
+                <li className="flex items-start gap-2">
+                  <span className="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold text-[11px] flex items-center justify-center shrink-0">1</span>
+                  <div>
+                    <span>Open this website in <strong>Safari</strong> on your iPhone.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold text-[11px] flex items-center justify-center shrink-0">2</span>
+                  <div>
+                    <span>Tap the <strong>Share button</strong> <span className="inline-block px-1.5 py-0.5 bg-white border border-slate-300 rounded font-mono text-[10px]">⎋</span> (square with arrow pointing up at the bottom).</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold text-[11px] flex items-center justify-center shrink-0">3</span>
+                  <div>
+                    <span>Scroll down and tap <strong>"Add to Home Screen"</strong> <span className="inline-block px-1.5 py-0.5 bg-white border border-slate-300 rounded font-bold text-[10px]">+</span>.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold text-[11px] flex items-center justify-center shrink-0">4</span>
+                  <div>
+                    <span>Tap <strong>"Add"</strong> at the top right. Done! The <strong>Arise & Shine</strong> app icon will now appear on your iPhone home screen and run full screen.</span>
+                  </div>
+                </li>
+              </ol>
             </div>
+          )}
 
-            {/* iOS Guide */}
-            <div className="p-3.5 rounded-2xl border border-slate-200 bg-slate-50 flex items-start space-x-3">
-              <div className="p-2 bg-slate-200 text-slate-800 rounded-xl shrink-0">
-                <Apple className="w-4 h-4" />
+          {/* TAB 2: ANDROID INSTRUCTIONS */}
+          {activeTab === 'android' && (
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+              <div className="flex items-center gap-2 text-slate-900 font-bold text-xs pb-1 border-b border-slate-200">
+                <Play className="w-4 h-4 text-emerald-600" />
+                <span>How to Install on Android (Chrome / Samsung Internet)</span>
               </div>
-              <div className="text-xs">
-                <span className="font-bold text-slate-900 block">iPhone / iPad (Apple Safari):</span>
-                <p className="text-slate-600 mt-0.5 leading-relaxed">
-                  1. Open this website in Safari on your iPhone.<br />
-                  2. Tap the <strong>Share button (square with arrow ⎋)</strong> at the bottom.<br />
-                  3. Scroll down and tap <strong>"Add to Home Screen"</strong>.<br />
-                  4. Tap <strong>"Add"</strong> in the top right corner. Done!
-                </p>
-              </div>
+
+              <ol className="space-y-2.5 text-xs text-slate-700">
+                <li className="flex items-start gap-2">
+                  <span className="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold text-[11px] flex items-center justify-center shrink-0">1</span>
+                  <div>
+                    <span>Tap the <strong>"Install App Now"</strong> button above, or tap the <strong>3 vertical dots (⋮)</strong> at the top right of Chrome.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold text-[11px] flex items-center justify-center shrink-0">2</span>
+                  <div>
+                    <span>Select <strong>"Install app"</strong> or <strong>"Add to Home screen"</strong>.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold text-[11px] flex items-center justify-center shrink-0">3</span>
+                  <div>
+                    <span>Confirm by tapping <strong>"Install"</strong>. The official app is immediately downloaded to your phone's app drawer!</span>
+                  </div>
+                </li>
+              </ol>
             </div>
+          )}
 
-            {/* Store Release Details */}
-            <div className="p-3.5 rounded-2xl border border-indigo-100 bg-indigo-50/60 text-xs">
-              <span className="font-bold text-indigo-950 block">Play Store & App Store Packaging:</span>
-              <p className="text-indigo-800/90 mt-1 leading-relaxed">
-                Both apps are configured with native <strong>Capacitor</strong> and <strong>PWA manifest</strong>, ready to build native Android APK/AAB for <strong>Google Play Console</strong> and Xcode iOS packages for <strong>Apple App Store Connect</strong>.
-              </p>
+          {/* Once Installed Notice */}
+          <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-200 text-xs text-emerald-900 flex items-start gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+            <div>
+              <span className="font-bold block">Automatic Clean UI</span>
+              <span className="text-[11px] text-emerald-800">
+                Once you open the installed app from your home screen, the "Install App" button and banners will disappear automatically!
+              </span>
             </div>
           </div>
 
           <div className="pt-2 text-center">
             <button
+              type="button"
               onClick={onClose}
               className="px-6 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer"
             >
-              Close
+              Continue in Browser
             </button>
           </div>
         </div>

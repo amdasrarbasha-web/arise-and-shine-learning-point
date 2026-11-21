@@ -18,7 +18,8 @@ export default function Navbar({
   onStudentLogout, 
   isAdminLoggedIn, 
   onAdminLogout,
-  onOpenInstallModal 
+  onOpenInstallModal,
+  isStandaloneApp 
 }) {
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
@@ -52,14 +53,16 @@ export default function Navbar({
               <a href="tel:9842385666" className="font-semibold text-white hover:text-amber-300 transition">9842385666</a>
             </div>
 
-            <button
-              onClick={onOpenInstallModal}
-              className="bg-amber-500/90 hover:bg-amber-500 text-slate-950 px-2.5 py-0.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 transition cursor-pointer shadow-xs"
-              title="Install official mobile app on your phone"
-            >
-              <Smartphone className="w-3.5 h-3.5" />
-              <span>Install App</span>
-            </button>
+            {!isStandaloneApp && (
+              <button
+                onClick={onOpenInstallModal}
+                className="bg-amber-500/90 hover:bg-amber-500 text-slate-950 px-2.5 py-0.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 transition cursor-pointer shadow-xs"
+                title="Install official mobile app on your phone"
+              >
+                <Smartphone className="w-3.5 h-3.5" />
+                <span>Install App</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

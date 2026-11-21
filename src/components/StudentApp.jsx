@@ -27,7 +27,9 @@ import {
   Check,
   FileText,
   MapPin,
-  RefreshCw
+  RefreshCw,
+  Smartphone,
+  Download
 } from 'lucide-react';
 import PhotoModal from './PhotoModal';
 
@@ -35,7 +37,9 @@ export default function StudentApp({
   student, 
   onLogout, 
   onLoginSuccess, 
-  centerInfo 
+  centerInfo,
+  isStandaloneApp,
+  onOpenInstallModal
 }) {
   // Login State
   const [loginId, setLoginId] = useState('');
@@ -340,6 +344,27 @@ export default function StudentApp({
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
+
+            {/* Install Prompt for Mobile Web Visitors (Hidden once running as installed standalone app) */}
+            {!isStandaloneApp && (
+              <div className="mt-5 p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-indigo-500/10 to-blue-500/10 border border-amber-300/60 text-center">
+                <div className="flex items-center justify-center gap-2 mb-1.5 text-slate-800 font-bold text-xs">
+                  <Smartphone className="w-4 h-4 text-amber-600" />
+                  <span>Download the Official App on Your Phone!</span>
+                </div>
+                <p className="text-[11px] text-slate-600 mb-3 leading-relaxed">
+                  Install Arise & Shine to get full-screen access, instant updates, and view your academic profile without opening a browser.
+                </p>
+                <button
+                  type="button"
+                  onClick={onOpenInstallModal}
+                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Install App (Android & iPhone)</span>
+                </button>
+              </div>
+            )}
 
             {/* Center Helpline & Map Link */}
             <div className="mt-5 text-center text-[11px] text-slate-400 space-y-1">
