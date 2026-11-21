@@ -203,6 +203,20 @@ app.put('/api/students/:id', (req, res) => {
   res.json({ success: true, student: db.students[idx] });
 });
 
+// Update student profile photo
+app.put('/api/students/:id/photo', (req, res) => {
+  const db = readDB();
+  const student = (db.students || []).find(s => s.id.toUpperCase() === req.params.id.toUpperCase());
+  if (!student) return res.status(404).json({ error: 'Student not found' });
+
+  const { photo } = req.body;
+  if (!photo) return res.status(400).json({ error: 'Photo data or URL is required' });
+
+  student.photo = photo;
+  writeDB(db);
+  res.json({ success: true, student, message: 'Student photo updated successfully' });
+});
+
 // Delete student
 app.delete('/api/students/:id', (req, res) => {
   const db = readDB();
