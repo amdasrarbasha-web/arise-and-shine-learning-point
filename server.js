@@ -553,8 +553,8 @@ app.delete('/api/feedbacks/:id', (req, res) => {
   res.json({ success: true, message: 'Message deleted successfully by admin' });
 });
 
-// Direct Android APK download endpoint
-app.get('/arise-and-shine.apk', (req, res) => {
+// Direct Android APK download endpoints (Students & Admins)
+app.get(['/arise-and-shine.apk', '/arise-and-shine-student.apk'], (req, res) => {
   const apkDist = path.join(__dirname, 'dist', 'arise-and-shine.apk');
   const apkPublic = path.join(__dirname, 'public', 'arise-and-shine.apk');
   const targetApk = fs.existsSync(apkDist) ? apkDist : (fs.existsSync(apkPublic) ? apkPublic : null);
@@ -562,11 +562,26 @@ app.get('/arise-and-shine.apk', (req, res) => {
   if (targetApk) {
     const stat = fs.statSync(targetApk);
     res.setHeader('Content-Type', 'application/vnd.android.package-archive');
-    res.setHeader('Content-Disposition', 'attachment; filename="Arise-and-Shine.apk"');
+    res.setHeader('Content-Disposition', 'attachment; filename="Arise-and-Shine-Student.apk"');
     res.setHeader('Content-Length', stat.size);
     return fs.createReadStream(targetApk).pipe(res);
   }
-  return res.status(404).send('APK is currently being packaged. Please try again shortly.');
+  return res.status(404).send('Student APK is currently being packaged. Please try again shortly.');
+});
+
+app.get('/arise-and-shine-admin.apk', (req, res) => {
+  const apkDist = path.join(__dirname, 'dist', 'arise-and-shine-admin.apk');
+  const apkPublic = path.join(__dirname, 'public', 'arise-and-shine-admin.apk');
+  const targetApk = fs.existsSync(apkDist) ? apkDist : (fs.existsSync(apkPublic) ? apkPublic : null);
+
+  if (targetApk) {
+    const stat = fs.statSync(targetApk);
+    res.setHeader('Content-Type', 'application/vnd.android.package-archive');
+    res.setHeader('Content-Disposition', 'attachment; filename="Arise-and-Shine-Admin.apk"');
+    res.setHeader('Content-Length', stat.size);
+    return fs.createReadStream(targetApk).pipe(res);
+  }
+  return res.status(404).send('Admin APK is currently being packaged. Please try again shortly.');
 });
 
 // Digital Asset Links for Android App Verification

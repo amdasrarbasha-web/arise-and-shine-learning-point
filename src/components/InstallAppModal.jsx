@@ -239,21 +239,34 @@ export default function InstallAppModal({ isOpen, onClose, deferredPrompt }) {
                 </li>
               </ol>
 
-              {/* Direct APK Download Option */}
-              <div className="pt-2 border-t border-slate-200">
-                <span className="text-[11px] font-bold text-slate-700 block mb-1.5">
-                  Or Download Direct APK File (.apk):
+              {/* Direct APK Download Options for Students & Admins */}
+              <div className="pt-2 border-t border-slate-200 space-y-2">
+                <span className="text-[11px] font-bold text-slate-700 block">
+                  Download Official Android APK (.apk):
                 </span>
-                <a
-                  href="/arise-and-shine.apk"
-                  download="Arise-and-Shine.apk"
-                  className="w-full py-2.5 px-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition cursor-pointer text-center"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>Download Arise & Shine APK (.apk)</span>
-                </a>
-                <p className="text-[10px] text-slate-500 mt-1.5 leading-relaxed">
-                  Direct Android installation file. Tap to download, then tap open in your phone's notification bar or downloads folder to install.
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <a
+                    href="/arise-and-shine-student.apk"
+                    download="Arise-and-Shine-Student.apk"
+                    className="py-2.5 px-3 bg-gradient-to-r from-blue-700 to-indigo-600 hover:from-blue-800 hover:to-indigo-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition cursor-pointer text-center"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Student App APK</span>
+                  </a>
+
+                  <a
+                    href="/arise-and-shine-admin.apk"
+                    download="Arise-and-Shine-Admin.apk"
+                    className="py-2.5 px-3 bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-950 hover:to-slate-900 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition cursor-pointer text-center border border-slate-700"
+                  >
+                    <ShieldCheck className="w-4 h-4 text-amber-400" />
+                    <span>Admin App APK</span>
+                  </a>
+                </div>
+
+                <p className="text-[10px] text-slate-500 mt-1 leading-relaxed">
+                  Direct installation files for Android devices. Tap to download, then tap open in your phone's notification bar or downloads folder to install.
                 </p>
               </div>
             </div>
