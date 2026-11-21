@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.ariseandshine.learningpoint",
+      "sha256_cert_fingerprints": [
+        "4F:14:EE:87:5D:AB:7D:0F:32:DC:E0:96:3B:44:0C:40:DC:98:91:E4:19:CE:B5:EA:49:DE:AA:60:48:18:3A:3B"
+      ]
+    }
+  }
+]

@@ -355,14 +355,24 @@ export default function StudentApp({
                 <p className="text-[11px] text-slate-600 mb-3 leading-relaxed">
                   Install Arise & Shine to get full-screen access, instant updates, and view your academic profile without opening a browser.
                 </p>
-                <button
-                  type="button"
-                  onClick={onOpenInstallModal}
-                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>Install App (Android & iPhone)</span>
-                </button>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <button
+                    type="button"
+                    onClick={onOpenInstallModal}
+                    className="flex-1 py-2.5 px-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Smartphone className="w-3.5 h-3.5" />
+                    <span>Install App</span>
+                  </button>
+                  <a
+                    href="/arise-and-shine.apk"
+                    download="Arise-and-Shine.apk"
+                    className="flex-1 py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer text-center"
+                  >
+                    <Download className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Download APK (.apk)</span>
+                  </a>
+                </div>
               </div>
             )}
 

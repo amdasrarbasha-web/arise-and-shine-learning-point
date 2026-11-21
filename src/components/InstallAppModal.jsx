@@ -238,6 +238,24 @@ export default function InstallAppModal({ isOpen, onClose, deferredPrompt }) {
                   </div>
                 </li>
               </ol>
+
+              {/* Direct APK Download Option */}
+              <div className="pt-2 border-t border-slate-200">
+                <span className="text-[11px] font-bold text-slate-700 block mb-1.5">
+                  Or Download Direct APK File (.apk):
+                </span>
+                <a
+                  href="/arise-and-shine.apk"
+                  download="Arise-and-Shine.apk"
+                  className="w-full py-2.5 px-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition cursor-pointer text-center"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download Arise & Shine APK (.apk)</span>
+                </a>
+                <p className="text-[10px] text-slate-500 mt-1.5 leading-relaxed">
+                  Direct Android installation file. Tap to download, then tap open in your phone's notification bar or downloads folder to install.
+                </p>
+              </div>
             </div>
           )}
 

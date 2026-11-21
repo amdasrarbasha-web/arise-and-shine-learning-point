@@ -545,6 +545,20 @@ app.delete('/api/feedbacks/:id', (req, res) => {
   res.json({ success: true, message: 'Message deleted successfully by admin' });
 });
 
+// Direct Android APK download endpoint
+app.get('/arise-and-shine.apk', (req, res) => {
+  const apkDist = path.join(__dirname, 'dist', 'arise-and-shine.apk');
+  const apkPublic = path.join(__dirname, 'public', 'arise-and-shine.apk');
+  const targetApk = fs.existsSync(apkDist) ? apkDist : (fs.existsSync(apkPublic) ? apkPublic : null);
+
+  if (targetApk) {
+    res.setHeader('Content-Type', 'application/vnd.android.package-archive');
+    res.setHeader('Content-Disposition', 'attachment; filename="Arise-and-Shine.apk"');
+    return res.sendFile(targetApk);
+  }
+  return res.status(404).send('APK is currently being packaged. Please try again shortly.');
+});
+
 // Serve frontend static files if dist folder exists
 const distPath = path.join(__dirname, 'dist');
 if (fs.existsSync(distPath)) {
@@ -562,7 +576,7 @@ if (fs.existsSync(distPath)) {
     if (
       req.path.startsWith('/api') ||
       req.path.startsWith('/assets') ||
-      /\.(js|css|png|jpg|jpeg|gif|svg|ico|json|woff2?|ttf|map)$/i.test(req.path)
+      /\.(js|css|png|jpg|jpeg|gif|svg|ico|json|woff2?|ttf|map|apk|aab|zip)$/i.test(req.path)
     ) {
       return res.status(404).send('Not found');
     }
