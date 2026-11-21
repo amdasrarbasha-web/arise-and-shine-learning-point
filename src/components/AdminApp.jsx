@@ -132,6 +132,44 @@ export default function AdminApp({
     setTimeout(() => setToastMsg(''), 4000);
   };
 
+  // Instant synchronization broadcaster: triggers 0ms update in Student Portal
+  const notifyStudentSync = (studentId) => {
+    try {
+      if (typeof window !== 'undefined') {
+        if (window.BroadcastChannel) {
+          const channel = new BroadcastChannel('arise_student_sync');
+          channel.postMessage({ type: 'STUDENT_UPDATED', studentId, timestamp: Date.now() });
+        }
+        localStorage.setItem('arise_sync_ping', `${studentId || 'all'}_${Date.now()}`);
+      }
+    } catch (e) {}
+  };
+
+  // Save changes from Edit Student Profile Modal
+  const handleSaveEditStudent = async (e) => {
+    e.preventDefault();
+    if (!editingStudent) return;
+    try {
+      const res = await fetch(`/api/students/${editingStudent.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingStudent),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setStudentsList(studentsList.map(s => (s.id === editingStudent.id ? data.student : s)));
+        notifyStudentSync(editingStudent.id);
+        setEditingStudent(null);
+        showToast(`Profile updated for ${data.student.name}!`);
+      } else {
+        alert('Could not update student.');
+      }
+    } catch (err) {
+      alert('Error updating student profile.');
+    }
+  };
+
   // Fetch all center data
   const fetchAllData = async () => {
     setIsLoading(true);
@@ -229,6 +267,7 @@ export default function AdminApp({
         alert(data.error || 'Failed to add student.');
       } else {
         setStudentsList([data.student, ...studentsList]);
+        notifyStudentSync(data.student.id);
         setIsAddStudentOpen(false);
         // Reset form
         setNewStudId('');
@@ -251,6 +290,7 @@ export default function AdminApp({
       const res = await fetch(`/api/students/${id}`, { method: 'DELETE' });
       if (res.ok) {
         setStudentsList(studentsList.filter(s => s.id !== id));
+        notifyStudentSync(id);
         showToast(`Student ${name} deleted.`);
       }
     } catch (err) {
@@ -300,6 +340,7 @@ export default function AdminApp({
       if (res.ok) {
         const data = await res.json();
         setStudentsList(studentsList.map(s => (s.id === studentId ? data.student : s)));
+        notifyStudentSync(studentId);
         showToast(`Marked ${data.student.name} as ${status}`);
       }
     } catch (err) {
@@ -317,6 +358,7 @@ export default function AdminApp({
       });
 
       if (res.ok) {
+        notifyStudentSync('all');
         showToast(`Marked all students as ${status} for ${attendanceDate}!`);
         fetchAllData();
       }
@@ -342,6 +384,7 @@ export default function AdminApp({
       if (res.ok) {
         const data = await res.json();
         setStudentsList(studentsList.map(s => (s.id === studentId ? data.student : s)));
+        notifyStudentSync(studentId);
         showToast(`Updated fee record for ${data.student.name}`);
       }
     } catch (err) {
@@ -368,6 +411,7 @@ export default function AdminApp({
       if (res.ok) {
         const data = await res.json();
         setStudentsList(studentsList.map(s => (s.id === selectedFeeStudent.id ? data.student : s)));
+        notifyStudentSync(selectedFeeStudent.id);
         setSelectedFeeStudent(null);
         showToast(`Fee updated to ₹${data.student.fee?.monthlyFee} for ${data.student.name}!`);
       } else {
@@ -440,6 +484,7 @@ export default function AdminApp({
       if (res.ok) {
         const data = await res.json();
         setStudentsList(studentsList.map(s => (s.id === selectedPhotoStudent.id ? { ...s, photo: data.student.photo } : s)));
+        notifyStudentSync(selectedPhotoStudent.id);
         setSelectedPhotoStudent(null);
         showToast(`Profile picture updated for ${selectedPhotoStudent.name}!`);
       } else {
@@ -601,6 +646,7 @@ export default function AdminApp({
       if (res.ok) {
         const data = await res.json();
         setStudentsList(studentsList.map(s => (s.id === studentId ? data.student : s)));
+        notifyStudentSync(studentId);
         showToast(`Behaviour updated for ${data.student.name}`);
       }
     } catch (err) {
@@ -1063,6 +1109,13 @@ export default function AdminApp({
 
                     <td className="py-3 px-3 text-right">
                       <div className="flex items-center justify-end space-x-1">
+                        <button
+                          onClick={() => setEditingStudent({ ...st, monthlyFee: st.fee?.monthlyFee || 1500 })}
+                          className="p-1.5 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition cursor-pointer"
+                          title="Edit Student Profile Details (Admin Only)"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
                         <button
                           onClick={() => handleOpenPhotoModal(st)}
                           className="p-1.5 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-lg transition cursor-pointer"
@@ -2335,6 +2388,178 @@ export default function AdminApp({
                 >
                   <Save className="w-3.5 h-3.5 mr-1" />
                   Save Announcement
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/* MODAL: EDIT STUDENT PROFILE (ADMIN EXCLUSIVE)                */}
+      {/* ============================================================ */}
+      {editingStudent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 my-8">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center space-x-2">
+                <div className="p-2 bg-blue-100 text-blue-700 rounded-xl">
+                  <Edit className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900">Edit Student Profile</h3>
+                  <p className="text-xs text-slate-500 font-mono">ID: {editingStudent.id} • Instant Live Sync</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setEditingStudent(null)} 
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEditStudent} className="py-4 space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    Student Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editingStudent.name || ''}
+                    onChange={(e) => setEditingStudent({ ...editingStudent, name: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    Roll Number *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editingStudent.rollNo || ''}
+                    onChange={(e) => setEditingStudent({ ...editingStudent, rollNo: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    Class / Grade *
+                  </label>
+                  <select
+                    value={editingStudent.grade || 'Class 10 - State Board'}
+                    onChange={(e) => setEditingStudent({ ...editingStudent, grade: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  >
+                    <option value="Class 8 - State Board">Class 8 - State Board</option>
+                    <option value="Class 9 - State Board">Class 9 - State Board</option>
+                    <option value="Class 10 - State Board">Class 10 - State Board</option>
+                    <option value="Class 11 - State Board">Class 11 - State Board</option>
+                    <option value="Class 12 - State Board">Class 12 - State Board</option>
+                    <option value="Class 8 - CBSE">Class 8 - CBSE</option>
+                    <option value="Class 9 - CBSE">Class 9 - CBSE</option>
+                    <option value="Class 10 - CBSE">Class 10 - CBSE</option>
+                    <option value="Class 11 - CBSE">Class 11 - CBSE</option>
+                    <option value="Class 12 - CBSE">Class 12 - CBSE</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    Student Login Password *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editingStudent.password || ''}
+                    onChange={(e) => setEditingStudent({ ...editingStudent, password: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  School Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editingStudent.school || ''}
+                  onChange={(e) => setEditingStudent({ ...editingStudent, school: e.target.value })}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    Parent / Guardian Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editingStudent.parentName || ''}
+                    onChange={(e) => setEditingStudent({ ...editingStudent, parentName: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    Parent Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={editingStudent.parentPhone || ''}
+                    onChange={(e) => setEditingStudent({ ...editingStudent, parentPhone: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  Monthly Tuition Fee (₹)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={editingStudent.monthlyFee !== undefined ? editingStudent.monthlyFee : (editingStudent.fee?.monthlyFee || 1500)}
+                  onChange={(e) => setEditingStudent({ ...editingStudent, monthlyFee: Number(e.target.value) })}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
+
+              <div className="p-3 bg-amber-50 rounded-xl border border-amber-200/80 text-[11px] text-amber-800 flex items-start gap-2">
+                <Shield className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <span>
+                  <strong>Strict Center Security:</strong> Only administrators can edit student records and photos. All changes save directly to the center database and update on student apps within seconds.
+                </span>
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setEditingStudent(null)}
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs font-bold shadow-sm cursor-pointer flex items-center space-x-1"
+                >
+                  <Save className="w-3.5 h-3.5 mr-1" />
+                  <span>Save & Sync Profile</span>
                 </button>
               </div>
             </form>

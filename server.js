@@ -198,7 +198,15 @@ app.put('/api/students/:id', (req, res) => {
   const idx = db.students.findIndex(s => s.id.toUpperCase() === req.params.id.toUpperCase());
   if (idx === -1) return res.status(404).json({ error: 'Student not found' });
 
-  db.students[idx] = { ...db.students[idx], ...req.body };
+  const existing = db.students[idx];
+  const updated = { ...existing, ...req.body };
+  if (req.body.monthlyFee !== undefined) {
+    updated.fee = {
+      ...(existing.fee || {}),
+      monthlyFee: Number(req.body.monthlyFee)
+    };
+  }
+  db.students[idx] = updated;
   writeDB(db);
   res.json({ success: true, student: db.students[idx] });
 });

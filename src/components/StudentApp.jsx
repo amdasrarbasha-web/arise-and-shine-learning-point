@@ -30,7 +30,6 @@ import {
   RefreshCw,
   Smartphone,
   Download,
-  Printer,
   ChevronRight,
   QrCode,
   ShieldCheck,
@@ -49,6 +48,18 @@ export default function StudentApp({
   isStandaloneApp,
   onOpenInstallModal
 }) {
+  // Real-time local student state that syncs instantly whenever Admin makes any update
+  const [currentStudent, setCurrentStudent] = useState(student);
+
+  useEffect(() => {
+    if (student) {
+      setCurrentStudent(student);
+    }
+  }, [student]);
+
+  // Active student reference
+  const s = currentStudent || student;
+
   // Login State
   const [loginId, setLoginId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -58,16 +69,11 @@ export default function StudentApp({
   // University Tab Navigation: 'dashboard', 'attendance', 'homework', 'fee', 'idcard', 'helpdesk'
   const [activeTab, setActiveTab] = useState('dashboard');
 
-  // Photo modal state
+  // Photo modal state (for viewing homework worksheets)
   const [modalPhoto, setModalPhoto] = useState(null);
   const [modalTitle, setModalTitle] = useState('');
 
-  // Student Photo Upload Modal state
-  const [isChangePhotoOpen, setIsChangePhotoOpen] = useState(false);
-  const [photoUploadPreview, setPhotoUploadPreview] = useState('');
-  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
-
-  // Homework submission form state
+  // Homework submission form state (for sharing school worksheets with tuition master)
   const [hwSubject, setHwSubject] = useState('Mathematics');
   const [hwDescription, setHwDescription] = useState('');
   const [hwPhotoBase64, setHwPhotoBase64] = useState('');
@@ -87,16 +93,16 @@ export default function StudentApp({
   const [announcementsList, setAnnouncementsList] = useState([]);
   const [isLoadingData, setIsLoadingData] = useState(false);
 
-  // Load student-specific data whenever student changes
+  // Load student-specific data with cache-busting timestamp for INSTANT synchronization
   const fetchStudentData = async (studId) => {
     if (!studId) return;
-    setIsLoadingData(true);
     try {
+      const cacheBust = Date.now();
       const [hwRes, fbRes, annRes, studRes] = await Promise.all([
-        fetch(`/api/homeworks?studentId=${studId}`),
-        fetch(`/api/feedbacks?studentId=${studId}`),
-        fetch('/api/announcements'),
-        fetch(`/api/students/${studId}`),
+        fetch(`/api/homeworks?studentId=${studId}&_t=${cacheBust}`),
+        fetch(`/api/feedbacks?studentId=${studId}&_t=${cacheBust}`),
+        fetch(`/api/announcements?_t=${cacheBust}`),
+        fetch(`/api/students/${studId}?_t=${cacheBust}`),
       ]);
 
       if (hwRes.ok) setHomeworksList(await hwRes.json());
@@ -104,35 +110,74 @@ export default function StudentApp({
       if (annRes.ok) setAnnouncementsList(await annRes.json());
       if (studRes.ok) {
         const freshStudent = await studRes.json();
-        if (freshStudent && onLoginSuccess) {
-          onLoginSuccess(freshStudent);
+        if (freshStudent && freshStudent.id) {
+          // Instant synchronous update to local student state
+          setCurrentStudent(freshStudent);
+          if (onStudentUpdate) onStudentUpdate(freshStudent);
+          if (onLoginSuccess) onLoginSuccess(freshStudent);
         }
       }
     } catch (err) {
-      console.error('Failed to fetch student data:', err);
-    } finally {
-      setIsLoadingData(false);
+      console.error('Failed to sync student data:', err);
     }
   };
 
+  // Ultra-responsive Instant Synchronization Listeners
   useEffect(() => {
-    if (student?.id) {
-      fetchStudentData(student.id);
-
-      // Auto-poll every 6 seconds to live-sync updated fee amount and updated announcements from Admin
-      const pollTimer = setInterval(() => {
-        fetchStudentData(student.id);
-      }, 6000);
-
-      return () => clearInterval(pollTimer);
-    } else {
-      // Fetch public announcements even before student logs in
-      fetch('/api/announcements')
+    const studentIdToWatch = s?.id;
+    if (!studentIdToWatch) {
+      // Fetch public announcements even before login
+      fetch(`/api/announcements?_t=${Date.now()}`)
         .then(r => r.ok ? r.json() : [])
         .then(data => setAnnouncementsList(data))
         .catch(err => console.error('Failed to fetch announcements:', err));
+      return;
     }
-  }, [student?.id]);
+
+    // 1. Immediate initial fetch
+    fetchStudentData(studentIdToWatch);
+
+    // 2. High-speed 1.5s background polling so updates from phone or computer reflect within 1.5s
+    const pollTimer = setInterval(() => {
+      fetchStudentData(studentIdToWatch);
+    }, 1500);
+
+    // 3. Instant BroadcastChannel for 0-millisecond sync across tabs/windows
+    let syncChannel;
+    try {
+      if (typeof window !== 'undefined' && window.BroadcastChannel) {
+        syncChannel = new BroadcastChannel('arise_student_sync');
+        syncChannel.onmessage = (event) => {
+          if (event.data?.type === 'STUDENT_UPDATED') {
+            fetchStudentData(studentIdToWatch);
+          }
+        };
+      }
+    } catch (e) {}
+
+    // 4. Instant localStorage storage event listener (cross-window/browser sync)
+    const handleStorageEvent = (e) => {
+      if (e.key === 'arise_sync_ping') {
+        fetchStudentData(studentIdToWatch);
+      }
+    };
+    window.addEventListener('storage', handleStorageEvent);
+
+    // 5. Refocus & screen unlock instant fetch
+    const handleRefocus = () => {
+      fetchStudentData(studentIdToWatch);
+    };
+    window.addEventListener('focus', handleRefocus);
+    document.addEventListener('visibilitychange', handleRefocus);
+
+    return () => {
+      clearInterval(pollTimer);
+      if (syncChannel) syncChannel.close();
+      window.removeEventListener('storage', handleStorageEvent);
+      window.removeEventListener('focus', handleRefocus);
+      document.removeEventListener('visibilitychange', handleRefocus);
+    };
+  }, [s?.id]);
 
   // Handle Login
   const handleLoginSubmit = async (e) => {
@@ -156,6 +201,7 @@ export default function StudentApp({
       if (!res.ok) {
         setLoginError(data.error || 'Login failed. Please check credentials.');
       } else {
+        setCurrentStudent(data.student);
         onLoginSuccess(data.student);
         fetchStudentData(data.student.id);
       }
@@ -166,7 +212,7 @@ export default function StudentApp({
     }
   };
 
-  // Convert uploaded image file to Base64
+  // Convert uploaded worksheet image file to Base64 (only for school homework)
   const processImageFile = (file, callback) => {
     if (!file) return;
     if (!file.type.startsWith('image/')) {
@@ -211,32 +257,6 @@ export default function StudentApp({
     }
   };
 
-  // Save student's updated profile picture
-  const handleSaveStudentPhoto = async (e) => {
-    e.preventDefault();
-    if (!student?.id || !photoUploadPreview) return;
-    setIsUploadingPhoto(true);
-    try {
-      const res = await fetch(`/api/students/${student.id}/photo`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ photo: photoUploadPreview }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (onStudentUpdate) onStudentUpdate(data.student);
-        if (onLoginSuccess) onLoginSuccess(data.student);
-        setIsChangePhotoOpen(false);
-      } else {
-        alert('Could not update profile photo.');
-      }
-    } catch (err) {
-      alert('Failed to update picture.');
-    } finally {
-      setIsUploadingPhoto(false);
-    }
-  };
-
   // Submit Homework by Parent / Student
   const handleHomeworkSubmit = async (e) => {
     e.preventDefault();
@@ -253,11 +273,11 @@ export default function StudentApp({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          studentId: student.id,
+          studentId: s.id,
           subject: hwSubject,
           description: hwDescription,
           photoUrl: hwPhotoBase64,
-          schoolName: student.school,
+          schoolName: s.school,
         }),
       });
 
@@ -294,7 +314,7 @@ export default function StudentApp({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          studentId: student.id,
+          studentId: s.id,
           category: fbCategory,
           message: fbMessage,
         }),
@@ -319,7 +339,7 @@ export default function StudentApp({
   // ============================================================
   // 1. PUBLIC / LOGGED-OUT VIEW (STUDENT LOGIN)
   // ============================================================
-  if (!student) {
+  if (!s) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         <div className="max-w-md mx-auto">
@@ -448,14 +468,14 @@ export default function StudentApp({
   }
 
   // Calculate attendance colors
-  const attPct = student.attendance?.percentage || 0;
+  const attPct = s.attendance?.percentage || 0;
   const attColor =
     attPct >= 90 ? 'bg-emerald-500' : attPct >= 75 ? 'bg-amber-500' : 'bg-rose-500';
   const attTextColor =
     attPct >= 90 ? 'text-emerald-700' : attPct >= 75 ? 'text-amber-700' : 'text-rose-700';
 
   // Fee status
-  const isFeePaid = student.fee?.status === 'PAID';
+  const isFeePaid = s.fee?.status === 'PAID';
 
   // Filtered homework list
   const filteredHomeworks = hwFilterSubject === 'All'
@@ -550,7 +570,7 @@ export default function StudentApp({
             </button>
 
             <button
-              onClick={() => fetchStudentData(student.id)}
+              onClick={() => fetchStudentData(s.id)}
               disabled={isLoadingData}
               className="p-2 ml-auto text-slate-500 hover:text-blue-700 hover:bg-slate-100 rounded-xl transition cursor-pointer"
               title="Refresh Live Records"
@@ -573,72 +593,52 @@ export default function StudentApp({
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
 
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
-                {/* Photo & Details */}
+                {/* Photo & Details (Only Admin can change photo via Admin App) */}
                 <div className="flex items-center space-x-4">
-                  <div className="relative group">
+                  <div className="relative shrink-0">
                     <img
-                      src={student.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${student.id}`}
-                      alt={student.name}
+                      src={s.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${s.id}`}
+                      alt={s.name}
                       className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-amber-400 shadow-md ring-2 ring-white/10"
                     />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPhotoUploadPreview(student.photo || '');
-                        setIsChangePhotoOpen(true);
-                      }}
-                      className="absolute -bottom-1 -right-1 p-1 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-full shadow-md transition cursor-pointer"
-                      title="Upload or Change Photo"
-                    >
-                      <Camera className="w-3.5 h-3.5" />
-                    </button>
                   </div>
 
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <h1 className="text-lg sm:text-2xl font-black tracking-tight text-white font-heading">
-                        {student.name}
+                        {s.name}
                       </h1>
                       <span className="text-[11px] font-mono font-bold bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full shadow-xs">
-                        {student.id}
+                        {s.id}
                       </span>
                     </div>
 
                     <p className="text-xs sm:text-sm text-slate-300 font-medium mt-1 flex items-center gap-2 truncate">
-                      <span>{student.grade}</span>
+                      <span>{s.grade}</span>
                       <span>•</span>
-                      <span className="text-slate-400 truncate">{student.school}</span>
+                      <span className="text-slate-400 truncate">{s.school}</span>
                     </p>
 
                     <div className="flex items-center gap-2 mt-2 text-[11px]">
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-semibold">
                         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span>{student.attendance?.todayStatus === 'Present' ? 'Present Today' : (student.attendance?.todayStatus || 'Active Student')}</span>
+                        <span>{s.attendance?.todayStatus === 'Present' ? 'Present Today' : (s.attendance?.todayStatus || 'Active Student')}</span>
                       </span>
                       <span className="text-slate-400 font-mono">
-                        Roll: {student.rollNo}
+                        Roll: {s.rollNo}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                {/* Right Button: Open Digital ID */}
-                <div className="flex sm:flex-col gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+                {/* Right Button: Open Digital ID ONLY (Fee button removed as requested) */}
+                <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
                   <button
                     onClick={() => setActiveTab('idcard')}
-                    className="flex-1 sm:flex-none py-2 px-3.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-white/20 cursor-pointer"
+                    className="w-full sm:w-auto py-2.5 px-4 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-white/20 cursor-pointer shadow-xs"
                   >
                     <IdCard className="w-4 h-4 text-amber-400" />
                     <span>View Student ID</span>
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('fee')}
-                    className={`flex-1 sm:flex-none py-2 px-3.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
-                      isFeePaid ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30' : 'bg-rose-500 text-white'
-                    }`}
-                  >
-                    <DollarSign className="w-4 h-4" />
-                    <span>{isFeePaid ? 'Fee: Paid ✓' : 'Fee: Pending'}</span>
                   </button>
                 </div>
               </div>
@@ -659,7 +659,7 @@ export default function StudentApp({
                 </div>
                 <div className="flex items-baseline space-x-2">
                   <span className={`text-2xl font-black font-heading ${attTextColor}`}>{attPct}%</span>
-                  <span className="text-xs text-slate-400 font-medium">({student.attendance?.attendedClasses || 0}/{student.attendance?.totalClasses || 0} classes)</span>
+                  <span className="text-xs text-slate-400 font-medium">({s.attendance?.attendedClasses || 0}/{s.attendance?.totalClasses || 0} classes)</span>
                 </div>
                 <div className="w-full h-1.5 bg-slate-100 rounded-full mt-3 overflow-hidden">
                   <div className={`h-full rounded-full ${attColor}`} style={{ width: `${Math.min(attPct, 100)}%` }}></div>
@@ -704,12 +704,12 @@ export default function StudentApp({
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-500 font-medium mt-3">
-                  Monthly: ₹{student.fee?.monthlyFee?.toLocaleString('en-IN') || '1,500'} • Next: {student.fee?.nextDueDate || '5th Next Month'}
+                  Monthly: ₹{s.fee?.monthlyFee?.toLocaleString('en-IN') || '1,500'} • Next: {s.fee?.nextDueDate || '5th Next Month'}
                 </p>
               </div>
             </div>
 
-            {/* 3. UNIVERSITY QUICK ACCESS ACTION TILES */}
+            {/* 3. UNIVERSITY QUICK ACCESS ACTION TILES (Print option removed) */}
             <div>
               <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Quick Navigation</h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -751,10 +751,10 @@ export default function StudentApp({
                   className="p-4 bg-white rounded-2xl border border-slate-200 hover:border-amber-400 shadow-xs transition text-left cursor-pointer group"
                 >
                   <div className="p-2.5 bg-amber-50 text-amber-600 rounded-xl w-fit mb-2 group-hover:scale-110 transition">
-                    <Printer className="w-5 h-5" />
+                    <DollarSign className="w-5 h-5" />
                   </div>
-                  <span className="font-bold text-xs text-slate-900 block">Tuition Receipt</span>
-                  <span className="text-[10px] text-slate-400">Official fee voucher</span>
+                  <span className="font-bold text-xs text-slate-900 block">Fee Statement</span>
+                  <span className="text-[10px] text-slate-400">Official fee ledger</span>
                 </button>
               </div>
             </div>
@@ -868,22 +868,22 @@ export default function StudentApp({
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
                 <div className="p-3 bg-blue-50/70 rounded-2xl border border-blue-100 text-center">
                   <span className="text-[11px] text-slate-500 block">Total Classes</span>
-                  <span className="text-xl font-black text-blue-900 font-heading">{student.attendance?.totalClasses || 0}</span>
+                  <span className="text-xl font-black text-blue-900 font-heading">{s.attendance?.totalClasses || 0}</span>
                 </div>
                 <div className="p-3 bg-emerald-50/70 rounded-2xl border border-emerald-100 text-center">
                   <span className="text-[11px] text-slate-500 block">Classes Attended</span>
-                  <span className="text-xl font-black text-emerald-900 font-heading">{student.attendance?.attendedClasses || 0}</span>
+                  <span className="text-xl font-black text-emerald-900 font-heading">{s.attendance?.attendedClasses || 0}</span>
                 </div>
                 <div className="p-3 bg-rose-50/70 rounded-2xl border border-rose-100 text-center">
                   <span className="text-[11px] text-slate-500 block">Classes Absent</span>
                   <span className="text-xl font-black text-rose-900 font-heading">
-                    {Math.max(0, (student.attendance?.totalClasses || 0) - (student.attendance?.attendedClasses || 0))}
+                    {Math.max(0, (s.attendance?.totalClasses || 0) - (s.attendance?.attendedClasses || 0))}
                   </span>
                 </div>
                 <div className="p-3 bg-amber-50/70 rounded-2xl border border-amber-100 text-center">
                   <span className="text-[11px] text-slate-500 block">Today's Status</span>
                   <span className="text-xs font-bold text-amber-900 bg-amber-200/80 px-2 py-0.5 rounded-full inline-block mt-1">
-                    {student.attendance?.todayStatus || 'Present'}
+                    {s.attendance?.todayStatus || 'Present'}
                   </span>
                 </div>
               </div>
@@ -894,7 +894,7 @@ export default function StudentApp({
                   Session Attendance History
                 </h4>
                 <div className="space-y-2">
-                  {(student.attendance?.recentHistory || []).map((h, i) => (
+                  {(s.attendance?.recentHistory || []).map((h, i) => (
                     <div
                       key={i}
                       className="flex items-center justify-between text-xs p-3 rounded-2xl bg-slate-50 border border-slate-100"
@@ -941,12 +941,12 @@ export default function StudentApp({
                     School Homework Desk
                   </h2>
                   <p className="text-xs text-slate-500">
-                    Parents and students can share homework given by school. Our tuition masters will supervise it during tuition hours.
+                    Share homework given by school. Our tuition masters will supervise and guide your child during tuition hours.
                   </p>
                 </div>
               </div>
 
-              {/* Upload Form */}
+              {/* Upload Form (Allows parents/students to attach school worksheet photos) */}
               <form onSubmit={handleHomeworkSubmit} className="p-4 sm:p-5 bg-indigo-50/50 rounded-2xl border border-indigo-100 space-y-4">
                 <h3 className="text-xs font-bold text-indigo-950 uppercase tracking-wider flex items-center gap-1.5">
                   <Upload className="w-4 h-4 text-indigo-600" />
@@ -989,7 +989,7 @@ export default function StudentApp({
                     <input
                       type="text"
                       disabled
-                      value={student.school || 'Islamiah Higher Secondary School'}
+                      value={s.school || 'Islamiah Higher Secondary School'}
                       className="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-medium text-slate-600"
                     />
                   </div>
@@ -1008,10 +1008,10 @@ export default function StudentApp({
                   ></textarea>
                 </div>
 
-                {/* Photo attachment from Camera / Gallery */}
+                {/* Photo attachment from Camera / Gallery for school worksheets */}
                 <div>
                   <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Attach Notebook or Worksheet Photo
+                    Attach Notebook or Worksheet Picture (Optional)
                   </label>
                   <div className="flex flex-wrap items-center gap-3">
                     <label className="inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-700 cursor-pointer transition shadow-xs">
@@ -1139,7 +1139,7 @@ export default function StudentApp({
 
                         <div className="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-200">
                           <span>Date: {hw.submittedAt}</span>
-                          <span className="text-indigo-600 font-semibold">{hw.schoolName || student.school}</span>
+                          <span className="text-indigo-600 font-semibold">{hw.schoolName || s.school}</span>
                         </div>
 
                         {/* Teacher's Supervision Note */}
@@ -1158,7 +1158,7 @@ export default function StudentApp({
         )}
 
         {/* ============================================================ */}
-        {/* TAB 4: TUITION FEE & PRINTABLE RECEIPT                      */}
+        {/* TAB 4: TUITION FEE & STATEMENT (Print Option Removed)        */}
         {/* ============================================================ */}
         {activeTab === 'fee' && (
           <div className="space-y-6 animate-fadeIn">
@@ -1173,7 +1173,7 @@ export default function StudentApp({
                     <h2 className="text-lg font-bold text-slate-900 font-heading">
                       Tuition Fee Account & Statement
                     </h2>
-                    <p className="text-xs text-slate-500">Official fee ledger for {student.name}</p>
+                    <p className="text-xs text-slate-500">Official fee ledger for {s.name}</p>
                   </div>
                 </div>
 
@@ -1201,7 +1201,7 @@ export default function StudentApp({
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
                   <span className="text-xs text-slate-500 block mb-1">Monthly Tuition Fee</span>
                   <span className="text-2xl font-black text-slate-900 font-heading">
-                    ₹{student.fee?.monthlyFee?.toLocaleString('en-IN') || '1,500'}
+                    ₹{s.fee?.monthlyFee?.toLocaleString('en-IN') || '1,500'}
                   </span>
                   <span className="text-[11px] text-slate-400 block mt-1">Per calendar month</span>
                 </div>
@@ -1209,17 +1209,17 @@ export default function StudentApp({
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
                   <span className="text-xs text-slate-500 block mb-1">Payment Method</span>
                   <span className="text-sm font-bold text-slate-800 block">
-                    {student.fee?.paymentMode || 'Cash at Center'}
+                    {s.fee?.paymentMode || 'Cash at Center'}
                   </span>
                   <span className="text-xs text-slate-500 block mt-1 font-mono">
-                    Receipt No: {student.fee?.receiptNo || 'ASLP-REC-2025-084'}
+                    Receipt No: {s.fee?.receiptNo || 'ASLP-REC-2025-084'}
                   </span>
                 </div>
 
                 <div className={`p-4 rounded-2xl border ${isFeePaid ? 'bg-blue-50/70 border-blue-200 text-blue-900' : 'bg-amber-50 border-amber-200 text-amber-900'}`}>
                   <span className="text-xs font-bold uppercase tracking-wider block mb-1">Next Due Date</span>
                   <span className="text-xl font-black font-heading block">
-                    {student.fee?.nextDueDate || '05th of Next Month'}
+                    {s.fee?.nextDueDate || '05th of Next Month'}
                   </span>
                   <span className="text-[11px] mt-1 block font-medium opacity-90">
                     {isFeePaid ? 'Your account is in good standing.' : 'Kindly pay the pending tuition fee.'}
@@ -1227,7 +1227,7 @@ export default function StudentApp({
                 </div>
               </div>
 
-              {/* Printable Official Receipt Slip */}
+              {/* Official Receipt Statement (Print option removed as requested) */}
               <div className="border border-slate-200 rounded-3xl p-6 bg-gradient-to-b from-white to-slate-50 shadow-sm relative">
                 <div className="flex items-center justify-between pb-3 border-b border-dashed border-slate-300 mb-4">
                   <div className="flex items-center space-x-2">
@@ -1241,9 +1241,9 @@ export default function StudentApp({
                   </div>
                   <div className="text-right">
                     <span className="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded">
-                      RECEIPT: {student.fee?.receiptNo || 'ASLP-REC-2025-084'}
+                      RECEIPT: {s.fee?.receiptNo || 'ASLP-REC-2025-084'}
                     </span>
-                    <p className="text-[10px] text-slate-400 mt-0.5">Date: {student.fee?.lastPaidDate || 'Recent Session'}</p>
+                    <p className="text-[10px] text-slate-400 mt-0.5">Date: {s.fee?.lastPaidDate || 'Recent Session'}</p>
                   </div>
                 </div>
 
@@ -1251,11 +1251,11 @@ export default function StudentApp({
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between py-1 border-b border-slate-100">
                     <span className="text-slate-500">Student Name:</span>
-                    <span className="font-bold text-slate-800">{student.name} ({student.id})</span>
+                    <span className="font-bold text-slate-800">{s.name} ({s.id})</span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-slate-100">
                     <span className="text-slate-500">Class & School:</span>
-                    <span className="font-bold text-slate-800">{student.grade} • {student.school}</span>
+                    <span className="font-bold text-slate-800">{s.grade} • {s.school}</span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-slate-100">
                     <span className="text-slate-500">Academic Year:</span>
@@ -1267,23 +1267,17 @@ export default function StudentApp({
                   </div>
                   <div className="flex justify-between py-1.5 font-bold text-sm">
                     <span className="text-slate-900">Total Amount:</span>
-                    <span className="text-emerald-700">₹{student.fee?.monthlyFee?.toLocaleString('en-IN') || '1,500'} (PAID)</span>
+                    <span className="text-emerald-700">₹{s.fee?.monthlyFee?.toLocaleString('en-IN') || '1,500'} ({isFeePaid ? 'PAID' : 'PENDING'})</span>
                   </div>
                 </div>
 
-                {/* Stamp & Seal Footer */}
+                {/* Stamp & Seal Footer (Print receipt button removed) */}
                 <div className="mt-4 pt-3 border-t border-dashed border-slate-300 flex items-center justify-between text-[11px] text-slate-500">
                   <div className="flex items-center gap-1.5 text-emerald-700 font-bold">
                     <ShieldCheck className="w-4 h-4" />
-                    <span>Official Verified Tuition Receipt</span>
+                    <span>Official Verified Tuition Record</span>
                   </div>
-                  <button
-                    onClick={() => window.print()}
-                    className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-bold text-xs flex items-center gap-1.5 transition cursor-pointer"
-                  >
-                    <Printer className="w-3.5 h-3.5" />
-                    <span>Print Receipt</span>
-                  </button>
+                  <span className="text-[10px] text-slate-400 font-mono">Center Certified • Melvisharam</span>
                 </div>
               </div>
             </div>
@@ -1291,7 +1285,7 @@ export default function StudentApp({
         )}
 
         {/* ============================================================ */}
-        {/* TAB 5: DIGITAL STUDENT ID CARD & PROFILE PHOTO               */}
+        {/* TAB 5: DIGITAL STUDENT ID CARD (Strictly Admin Managed)       */}
         {/* ============================================================ */}
         {activeTab === 'idcard' && (
           <div className="space-y-6 animate-fadeIn">
@@ -1319,31 +1313,20 @@ export default function StudentApp({
                   </span>
                 </div>
 
-                {/* Student Photo with Camera Edit Overlay */}
+                {/* Student Photo (Photo upload removed - Only Admin can change via Admin App) */}
                 <div className="flex flex-col items-center mb-5">
-                  <div className="relative group">
+                  <div className="relative">
                     <img
-                      src={student.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${student.id}`}
-                      alt={student.name}
+                      src={s.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${s.id}`}
+                      alt={s.name}
                       className="w-28 h-28 rounded-3xl object-cover border-4 border-amber-400 shadow-xl ring-4 ring-white/10"
                     />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPhotoUploadPreview(student.photo || '');
-                        setIsChangePhotoOpen(true);
-                      }}
-                      className="absolute -bottom-2 -right-2 p-2 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-full shadow-lg transition cursor-pointer"
-                      title="Upload New Picture"
-                    >
-                      <Camera className="w-4 h-4" />
-                    </button>
                   </div>
                   <h3 className="text-lg font-black text-white mt-3 font-heading text-center">
-                    {student.name}
+                    {s.name}
                   </h3>
                   <span className="text-xs font-mono font-bold text-amber-300 bg-amber-400/10 px-3 py-0.5 rounded-full border border-amber-400/30 mt-1">
-                    ID: {student.id}
+                    ID: {s.id}
                   </span>
                 </div>
 
@@ -1351,23 +1334,23 @@ export default function StudentApp({
                 <div className="bg-white/5 rounded-2xl p-4 border border-white/10 space-y-2.5 text-xs">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Roll Number:</span>
-                    <span className="font-bold text-white font-mono">{student.rollNo}</span>
+                    <span className="font-bold text-white font-mono">{s.rollNo}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Class / Grade:</span>
-                    <span className="font-bold text-white">{student.grade}</span>
+                    <span className="font-bold text-white">{s.grade}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">School:</span>
-                    <span className="font-bold text-white text-right max-w-[180px] truncate">{student.school}</span>
+                    <span className="font-bold text-white text-right max-w-[180px] truncate">{s.school}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Parent / Guardian:</span>
-                    <span className="font-bold text-white">{student.parentName}</span>
+                    <span className="font-bold text-white">{s.parentName}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Contact:</span>
-                    <span className="font-bold text-white font-mono">{student.parentPhone}</span>
+                    <span className="font-bold text-white font-mono">{s.parentPhone}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Valid Academic Session:</span>
@@ -1393,23 +1376,15 @@ export default function StudentApp({
                 </div>
               </div>
 
-              {/* Photo Change Action Card */}
-              <div className="mt-4 p-4 bg-white rounded-2xl border border-slate-200 text-center space-y-2">
-                <span className="text-xs font-bold text-slate-800 block">Want to change your profile picture?</span>
-                <p className="text-[11px] text-slate-500 leading-relaxed">
-                  Upload a clear passport-size photo from your phone camera or gallery to update your profile card.
+              {/* Institution Verified Notice (Photo upload card removed) */}
+              <div className="mt-4 p-3.5 bg-white rounded-2xl border border-slate-200 text-center">
+                <div className="flex items-center justify-center gap-1.5 text-slate-800 font-bold text-xs">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <span>Institution Verified Record</span>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                  Student details and photographs are verified and managed strictly by Tuition Center Administration.
                 </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setPhotoUploadPreview(student.photo || '');
-                    setIsChangePhotoOpen(true);
-                  }}
-                  className="w-full py-2.5 px-4 bg-gradient-to-r from-blue-700 to-indigo-600 hover:from-blue-800 hover:to-indigo-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition cursor-pointer"
-                >
-                  <Camera className="w-4 h-4" />
-                  <span>Upload or Change Student Picture</span>
-                </button>
               </div>
             </div>
           </div>
@@ -1469,7 +1444,7 @@ export default function StudentApp({
                     <input
                       type="text"
                       disabled
-                      value={`${student.name} (ID: ${student.id})`}
+                      value={`${s.name} (ID: ${s.id})`}
                       className="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600"
                     />
                   </div>
@@ -1609,73 +1584,6 @@ export default function StudentApp({
           <span className="text-[10px]">ID Card</span>
         </button>
       </nav>
-
-      {/* ============================================================ */}
-      {/* STUDENT PHOTO UPLOAD MODAL                                  */}
-      {/* ============================================================ */}
-      {isChangePhotoOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="text-base font-bold text-slate-900">Change Profile Photo</h3>
-              <button 
-                onClick={() => setIsChangePhotoOpen(false)} 
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveStudentPhoto} className="py-4 space-y-4">
-              <div className="flex flex-col items-center justify-center p-4 bg-slate-50 rounded-2xl border border-slate-200">
-                <img
-                  src={photoUploadPreview || `https://api.dicebear.com/7.x/bottts/svg?seed=${student.id}`}
-                  alt="Preview"
-                  className="w-24 h-24 rounded-2xl object-cover border-2 border-white shadow-md ring-2 ring-blue-500/30"
-                />
-                <span className="text-xs font-bold text-slate-800 mt-2">{student.name}</span>
-                <span className="text-[11px] text-slate-400">{student.id}</span>
-              </div>
-
-              <div>
-                <label className="w-full py-2.5 px-4 bg-gradient-to-r from-blue-700 to-indigo-600 hover:from-blue-800 hover:to-indigo-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-sm transition">
-                  <Camera className="w-4 h-4" />
-                  <span>Choose Photo or Take Picture</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    capture="user"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        processImageFile(file, (dataUrl) => setPhotoUploadPreview(dataUrl));
-                      }
-                    }}
-                  />
-                </label>
-              </div>
-
-              <div className="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => setIsChangePhotoOpen(false)}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isUploadingPhoto || !photoUploadPreview}
-                  className="px-5 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs font-bold shadow-sm cursor-pointer disabled:opacity-50"
-                >
-                  {isUploadingPhoto ? 'Saving...' : 'Save Picture'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       {/* Expanded Photo Modal */}
       <PhotoModal
