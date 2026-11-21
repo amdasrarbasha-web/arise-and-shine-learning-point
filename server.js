@@ -548,13 +548,27 @@ app.delete('/api/feedbacks/:id', (req, res) => {
 // Serve frontend static files if dist folder exists
 const distPath = path.join(__dirname, 'dist');
 if (fs.existsSync(distPath)) {
-  app.use(express.static(distPath));
-  app.use((req, res) => {
-    if (!req.path.startsWith('/api')) {
-      res.sendFile('index.html', { root: distPath });
-    } else {
-      res.status(404).json({ error: 'Endpoint not found' });
+  // Serve static assets with no-cache on HTML and service worker
+  app.use(express.static(distPath, {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('index.html') || filePath.endsWith('sw.js')) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      }
     }
+  }));
+
+  app.use((req, res) => {
+    // Never serve index.html for API requests, assets, scripts or images
+    if (
+      req.path.startsWith('/api') ||
+      req.path.startsWith('/assets') ||
+      /\.(js|css|png|jpg|jpeg|gif|svg|ico|json|woff2?|ttf|map)$/i.test(req.path)
+    ) {
+      return res.status(404).send('Not found');
+    }
+    // Only serve index.html for client-side HTML page navigation
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.sendFile('index.html', { root: distPath });
   });
 }
 

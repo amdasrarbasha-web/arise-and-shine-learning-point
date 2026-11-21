@@ -3,10 +3,22 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 
-// Register PWA service worker for mobile offline readiness and app install
+// Register PWA service worker with automatic update check
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch((err) => {
+    navigator.serviceWorker.register('/sw.js').then((reg) => {
+      reg.update();
+      reg.onupdatefound = () => {
+        const installingWorker = reg.installing;
+        if (installingWorker) {
+          installingWorker.onstatechange = () => {
+            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              window.location.reload();
+            }
+          };
+        }
+      };
+    }).catch((err) => {
       console.log('SW registration note:', err);
     });
   });
