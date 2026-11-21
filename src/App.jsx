@@ -211,6 +211,7 @@ export default function App() {
             student={activeStudent}
             onLogout={handleStudentLogout}
             onLoginSuccess={handleStudentLogin}
+            onStudentUpdate={setActiveStudent}
             centerInfo={centerInfo}
             isStandaloneApp={isStandaloneApp}
             onOpenInstallModal={() => setIsInstallModalOpen(true)}

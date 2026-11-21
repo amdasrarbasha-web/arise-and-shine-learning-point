@@ -23,8 +23,8 @@ export default function Navbar({
 }) {
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-      {/* Top micro bar for Center Details */}
-      <div className="bg-gradient-to-r from-indigo-900 via-blue-900 to-indigo-950 text-white text-xs py-1.5 px-4 sm:px-6">
+      {/* Top micro bar for Center Details - Hidden on mobile if student is logged in for maximum app space */}
+      <div className={`bg-gradient-to-r from-indigo-900 via-blue-900 to-indigo-950 text-white text-xs py-1.5 px-4 sm:px-6 ${activeStudent ? 'hidden sm:block' : 'block'}`}>
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center space-x-3">
             <span className="flex items-center gap-1 text-amber-300 font-semibold tracking-wide uppercase text-[11px]">
@@ -68,45 +68,48 @@ export default function Navbar({
       </div>
 
       {/* Main Navbar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2">
         {/* Brand Logo & Name */}
         <div 
           onClick={() => setCurrentPortal('student')} 
-          className="flex items-center space-x-3 cursor-pointer group"
+          className="flex items-center space-x-2 sm:space-x-3 cursor-pointer group min-w-0"
         >
           <img 
             src="/logo.png" 
             alt="Arise and Shine Tuition Center Logo" 
-            className="w-12 h-12 object-contain group-hover:scale-105 transition-transform duration-200 shrink-0 drop-shadow-sm" 
+            className="w-9 h-9 sm:w-11 sm:h-11 object-contain group-hover:scale-105 transition-transform duration-200 shrink-0 drop-shadow-sm" 
           />
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 font-heading">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5">
+              <span className="text-base sm:text-xl font-black tracking-tight text-slate-900 font-heading truncate">
                 ARISE <span className="text-amber-500">&</span> SHINE
               </span>
-              <span className="text-[10px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded border border-amber-300 hidden sm:inline-block">
-                TUITION CENTER
+              <span className="text-[9px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded border border-amber-300 hidden sm:inline-block shrink-0">
+                PORTAL
               </span>
             </div>
-            <p className="text-xs text-slate-500 font-medium">
+            <p className="text-[11px] text-slate-500 font-medium truncate hidden sm:block">
               Coaching for LKG to 12th Std • Melvisharam
+            </p>
+            <p className="text-[10px] text-blue-600 font-bold truncate sm:hidden">
+              Official Student App
             </p>
           </div>
         </div>
 
         {/* Right side Actions (No Admin Tab in Student App) */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2 shrink-0">
           {currentPortal === 'student' ? (
             // In Student & Parent App: Clean view with student status & logout only
             activeStudent && (
-              <div className="flex items-center space-x-2">
-                <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-xl text-xs font-semibold border border-blue-200">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span>{activeStudent.name}</span>
+              <div className="flex items-center space-x-1.5 sm:space-x-2">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-blue-50 text-blue-700 rounded-xl text-xs font-semibold border border-blue-200 max-w-[130px] sm:max-w-none truncate">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                  <span className="truncate">{activeStudent.name}</span>
                 </span>
                 <button
                   onClick={onStudentLogout}
-                  className="flex items-center space-x-1.5 text-xs text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-xl border border-rose-200 transition font-medium cursor-pointer"
+                  className="flex items-center space-x-1 text-xs text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl border border-rose-200 transition font-bold cursor-pointer shrink-0"
                   title="Sign Out of Student Account"
                 >
                   <LogOut className="w-3.5 h-3.5" />
