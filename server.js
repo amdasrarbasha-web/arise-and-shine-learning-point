@@ -561,11 +561,22 @@ app.get('/arise-and-shine.apk', (req, res) => {
   return res.status(404).send('APK is currently being packaged. Please try again shortly.');
 });
 
+// Digital Asset Links for Android App Verification
+app.get('/.well-known/assetlinks.json', (req, res) => {
+  const assetlinksPath = path.join(__dirname, 'public', '.well-known', 'assetlinks.json');
+  if (fs.existsSync(assetlinksPath)) {
+    res.setHeader('Content-Type', 'application/json');
+    return fs.createReadStream(assetlinksPath).pipe(res);
+  }
+  return res.status(404).send('Not found');
+});
+
 // Serve frontend static files if dist folder exists
 const distPath = path.join(__dirname, 'dist');
 if (fs.existsSync(distPath)) {
   // Serve static assets with no-cache on HTML and service worker
   app.use(express.static(distPath, {
+    dotfiles: 'allow',
     setHeaders: (res, filePath) => {
       if (filePath.endsWith('index.html') || filePath.endsWith('sw.js')) {
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
