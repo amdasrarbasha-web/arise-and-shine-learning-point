@@ -487,8 +487,8 @@ export default function StudentApp({
   // ============================================================
   return (
     <div className="min-h-screen bg-slate-50/70 pb-28 sm:pb-12">
-      {/* University Top Tab Navigation (Desktop / Tablet) */}
-      <div className="bg-white border-b border-slate-200 sticky top-14 sm:top-16 z-30 shadow-xs">
+      {/* University Top Tab Navigation (Hidden on mobile to save vertical space; mobile uses bottom navigation bar) */}
+      <div className="hidden sm:block bg-white border-b border-slate-200 sticky top-16 z-30 shadow-xs">
         <div className="max-w-7xl mx-auto px-3 sm:px-6">
           <div className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto py-2.5 no-scrollbar text-xs font-bold">
             <button
@@ -845,7 +845,7 @@ export default function StudentApp({
                     <p className="text-xs text-slate-500">Live track of academic sessions at Melvisharam center</p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-left sm:text-right flex sm:block items-baseline gap-2">
                   <span className={`text-3xl font-black font-heading ${attTextColor}`}>{attPct}%</span>
                   <p className="text-[10px] text-slate-400 font-semibold uppercase">Cumulative Rate</p>
                 </div>

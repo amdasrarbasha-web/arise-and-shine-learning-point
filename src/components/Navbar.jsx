@@ -24,46 +24,32 @@ export default function Navbar({
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
       {/* Top micro bar for Center Details - Hidden on mobile if student is logged in for maximum app space */}
-      <div className={`bg-gradient-to-r from-indigo-900 via-blue-900 to-indigo-950 text-white text-xs py-1.5 px-4 sm:px-6 ${activeStudent ? 'hidden sm:block' : 'block'}`}>
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center space-x-3">
-            <span className="flex items-center gap-1 text-amber-300 font-semibold tracking-wide uppercase text-[11px]">
-              <Sparkles className="w-3.5 h-3.5" />
-              Tuition & Academic Excellence
+      <div className={`bg-gradient-to-r from-indigo-900 via-blue-900 to-indigo-950 text-white text-[11px] py-1 px-3 sm:px-6 ${activeStudent ? 'hidden sm:block' : 'block'}`}>
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+          <div className="flex items-center space-x-2 truncate">
+            <span className="flex items-center gap-1 text-amber-300 font-bold uppercase tracking-wider text-[10px] sm:text-[11px] shrink-0">
+              <Sparkles className="w-3 h-3 text-amber-300" />
+              <span>Tuition Excellence</span>
             </span>
-            <span className="hidden md:inline text-slate-400">|</span>
-            <a 
-              href="https://maps.app.goo.gl/HvDyLK4yPX7bpAeF9?g_st=ic" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hidden md:flex items-center gap-1 text-slate-200 hover:text-amber-300 transition"
-              title="Open Location on Google Maps"
-            >
-              <MapPin className="w-3.5 h-3.5 text-red-400" />
-              <span className="underline decoration-slate-500 underline-offset-2">Melvisharam (View on Google Maps)</span>
-            </a>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 text-slate-200">
-              <Phone className="w-3 h-3 text-emerald-400" />
-              <span>Contact:</span>
+            <span className="text-slate-500 hidden sm:inline">|</span>
+            <div className="flex items-center space-x-1 text-slate-200 text-[11px] truncate">
+              <Phone className="w-2.5 h-2.5 text-emerald-400 shrink-0" />
               <a href="tel:6379840006" className="font-semibold text-white hover:text-amber-300 transition">6379840006</a>
-              <span>,</span>
+              <span>/</span>
               <a href="tel:9842385666" className="font-semibold text-white hover:text-amber-300 transition">9842385666</a>
             </div>
-
-            {!isStandaloneApp && (
-              <button
-                onClick={onOpenInstallModal}
-                className="bg-amber-500/90 hover:bg-amber-500 text-slate-950 px-2.5 py-0.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 transition cursor-pointer shadow-xs"
-                title="Install official mobile app on your phone"
-              >
-                <Smartphone className="w-3.5 h-3.5" />
-                <span>Install App</span>
-              </button>
-            )}
           </div>
+
+          {!isStandaloneApp && (
+            <button
+              onClick={onOpenInstallModal}
+              className="bg-amber-400 hover:bg-amber-300 text-slate-950 px-2 py-0.5 rounded-md text-[10px] font-extrabold flex items-center gap-1 transition cursor-pointer shadow-xs shrink-0"
+              title="Install official mobile app on your phone"
+            >
+              <Smartphone className="w-3 h-3" />
+              <span>Install App</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -92,7 +78,7 @@ export default function Navbar({
               Coaching for LKG to 12th Std • Melvisharam
             </p>
             <p className="text-[10px] text-blue-600 font-bold truncate sm:hidden">
-              Official Student App
+              {currentPortal === 'admin' ? 'Center Admin Portal' : 'Official Student App'}
             </p>
           </div>
         </div>

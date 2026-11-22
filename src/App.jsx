@@ -168,25 +168,26 @@ export default function App() {
         isStandaloneApp={isStandaloneApp}
       />
 
-      {/* Prominent Install Prompt Banner (Visible ONLY when accessed via browser, hidden inside installed app) */}
+      {/* Prominent Install Prompt Banner (Sleek, single-line responsive) */}
       {!isStandaloneApp && !isBannerDismissed && (
-        <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 px-4 py-2 text-xs font-semibold shadow-xs border-b border-amber-600/20">
-          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
-            <div className="flex items-center space-x-2">
+        <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-semibold shadow-xs border-b border-amber-600/20">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+            <div className="flex items-center space-x-2 min-w-0">
               <span className="p-1 bg-slate-950 text-amber-400 rounded-md shrink-0">
                 <Smartphone className="w-3.5 h-3.5" />
               </span>
-              <span>
-                <strong>For the best experience:</strong> Install the official <strong>Arise & Shine App</strong> on your phone for full-screen access and instant updates!
+              <span className="truncate sm:whitespace-normal">
+                <strong className="hidden sm:inline">For the best experience: </strong>
+                <span>Install <strong>Arise & Shine App</strong> on phone</span>
               </span>
             </div>
-            <div className="flex items-center space-x-2 shrink-0">
+            <div className="flex items-center space-x-1.5 shrink-0">
               <button
                 type="button"
                 onClick={() => setIsInstallModalOpen(true)}
-                className="bg-slate-950 hover:bg-slate-900 text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer shadow-xs"
+                className="bg-slate-950 hover:bg-slate-900 text-white px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold transition cursor-pointer shadow-xs whitespace-nowrap"
               >
-                Install App Now
+                Install App
               </button>
               <button
                 type="button"
@@ -194,7 +195,7 @@ export default function App() {
                   setIsBannerDismissed(true);
                   sessionStorage.setItem('arise_install_banner_dismissed', 'true');
                 }}
-                className="p-1 text-slate-900 hover:text-slate-700 rounded transition cursor-pointer font-bold text-sm"
+                className="p-1 text-slate-900 hover:text-slate-700 rounded transition cursor-pointer font-bold text-xs"
                 title="Dismiss Banner"
               >
                 ✕

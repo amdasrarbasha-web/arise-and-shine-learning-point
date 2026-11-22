@@ -876,11 +876,11 @@ export default function AdminApp({
         </div>
       </div>
 
-      {/* ADMIN NAVIGATION TABS */}
-      <div className="bg-white p-2 rounded-2xl border border-slate-200/90 shadow-xs flex flex-wrap gap-1.5">
+      {/* ADMIN NAVIGATION TABS (Horizontal scrolling pill bar on mobile) */}
+      <div className="bg-white p-2 rounded-2xl border border-slate-200/90 shadow-xs overflow-x-auto no-scrollbar flex items-center space-x-2 py-2">
         <button
           onClick={() => setActiveTab('students')}
-          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
             activeTab === 'students' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
@@ -890,7 +890,7 @@ export default function AdminApp({
 
         <button
           onClick={() => setActiveTab('attendance')}
-          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
             activeTab === 'attendance' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
@@ -900,7 +900,7 @@ export default function AdminApp({
 
         <button
           onClick={() => setActiveTab('fees')}
-          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
             activeTab === 'fees' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
@@ -911,7 +911,7 @@ export default function AdminApp({
         {/* TAB 1 REQUIRED BY USER: HOMEWORKS RECEIVED FROM PARENT */}
         <button
           onClick={() => setActiveTab('homeworks')}
-          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
             activeTab === 'homeworks' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
@@ -925,7 +925,7 @@ export default function AdminApp({
         {/* TAB 2 REQUIRED BY USER: FEEDBACKS RECEIVED FROM PARENT */}
         <button
           onClick={() => setActiveTab('feedbacks')}
-          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
             activeTab === 'feedbacks' ? 'bg-amber-500 text-slate-950 shadow-xs' : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
@@ -938,7 +938,7 @@ export default function AdminApp({
 
         <button
           onClick={() => setActiveTab('announcements')}
-          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
             activeTab === 'announcements' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
@@ -948,7 +948,7 @@ export default function AdminApp({
 
         <button
           onClick={() => setActiveTab('behaviour')}
-          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
             activeTab === 'behaviour' ? 'bg-purple-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
@@ -964,31 +964,31 @@ export default function AdminApp({
         <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <h2 className="text-lg font-bold text-slate-900 font-heading">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900 font-heading">
                 Students Records & Credentials Directory
               </h2>
               <p className="text-xs text-slate-500">
-                All enrolled students with individual IDs & passwords. Click credentials to view or copy.
+                All enrolled students with individual IDs & passwords.
               </p>
             </div>
 
-            {/* Search and Grade filters */}
-            <div className="flex items-center space-x-2">
-              <div className="relative">
+            {/* Responsive Search and Grade filters */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+              <div className="relative flex-1 sm:w-56">
                 <Search className="w-3.5 h-3.5 absolute left-3 top-3 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Search by ID, name, school..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 w-56"
+                  className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
               <select
                 value={gradeFilter}
                 onChange={(e) => setGradeFilter(e.target.value)}
-                className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full sm:w-auto px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="All">All Classes (LKG to 12th)</option>
                 <option value="LKG">LKG / UKG</option>
@@ -1008,9 +1008,126 @@ export default function AdminApp({
             </div>
           </div>
 
-          {/* Student Grid / Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+          {/* ======================================================= */}
+          {/* MOBILE VIEW: SLEEK STUDENT CARDS (ZERO OVERLAPPING)     */}
+          {/* ======================================================= */}
+          <div className="sm:hidden space-y-3 pt-1">
+            {filteredStudents.length === 0 ? (
+              <div className="text-center py-8 text-slate-400 text-xs bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                No students found matching your search.
+              </div>
+            ) : (
+              filteredStudents.map((st) => (
+                <div 
+                  key={st.id} 
+                  className="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs hover:border-blue-400 transition"
+                >
+                  {/* Top row: Avatar + Name + ID */}
+                  <div className="flex items-start gap-3">
+                    <div 
+                      onClick={() => handleOpenPhotoModal(st)}
+                      className="relative cursor-pointer shrink-0"
+                      title="Upload or change student photo"
+                    >
+                      <img
+                        src={st.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${st.id}`}
+                        alt={st.name}
+                        className="w-13 h-13 rounded-2xl object-cover border-2 border-white shadow-sm ring-1 ring-slate-200"
+                      />
+                      <span className="absolute -bottom-1 -right-1 p-1 bg-indigo-600 rounded-full text-white shadow-xs">
+                        <Camera className="w-2.5 h-2.5" />
+                      </span>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-1 flex-wrap">
+                        <h4 className="font-bold text-sm text-slate-900 truncate">{st.name}</h4>
+                        <span className="text-[10px] font-mono font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full shrink-0">
+                          {st.id}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500">
+                        <span>Roll: <strong className="text-slate-800 font-mono">{st.rollNo}</strong></span>
+                        <span>•</span>
+                        <span className="font-mono text-[11px] text-slate-600">Pass: <strong>{st.password}</strong></span>
+                      </div>
+
+                      <p className="text-xs text-slate-600 font-medium truncate mt-0.5">
+                        {st.grade}
+                      </p>
+                      <p className="text-[11px] text-slate-400 truncate">
+                        {st.school}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Middle Info Row: Parent Info, Attendance %, Fee Badge */}
+                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/70 text-xs">
+                    <div className="bg-white p-2.5 rounded-xl border border-slate-100">
+                      <span className="text-[10px] text-slate-400 uppercase font-bold block">Parent / Guardian</span>
+                      <span className="font-semibold text-slate-800 truncate block mt-0.5">{st.parentName}</span>
+                      <a href={`tel:${st.parentPhone}`} className="text-blue-600 font-mono font-bold text-[11px] flex items-center gap-1 mt-0.5 hover:underline">
+                        <Phone className="w-3 h-3 text-emerald-500" />
+                        <span>{st.parentPhone}</span>
+                      </a>
+                    </div>
+
+                    <div className="bg-white p-2.5 rounded-xl border border-slate-100 flex flex-col justify-between">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] text-slate-400 uppercase font-bold">Attendance</span>
+                        <span className="font-bold text-slate-800 text-xs">{st.attendance?.percentage || 0}%</span>
+                      </div>
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="text-[10px] text-slate-400 uppercase font-bold">Tuition Fee</span>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          st.fee?.status === 'PAID' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                        }`}>
+                          {st.fee?.status || 'PENDING'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom Action Buttons: Full touch-friendly targets */}
+                  <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-200/70">
+                    <button
+                      type="button"
+                      onClick={() => setEditingStudent({ ...st, monthlyFee: st.fee?.monthlyFee || 1500 })}
+                      className="py-2 px-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition border border-blue-200 cursor-pointer"
+                    >
+                      <Edit className="w-3.5 h-3.5" />
+                      <span>Edit</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleOpenPhotoModal(st)}
+                      className="py-2 px-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition border border-indigo-200 cursor-pointer"
+                    >
+                      <Camera className="w-3.5 h-3.5" />
+                      <span>Photo</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteStudent(st.id, st.name)}
+                      className="py-2 px-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition border border-rose-200 cursor-pointer"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* ======================================================= */}
+          {/* DESKTOP / TABLET VIEW: FULL DATA TABLE (HIDDEN ON MOBILE)*/}
+          {/* ======================================================= */}
+          <div className="hidden sm:block overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse min-w-[760px]">
               <thead>
                 <tr className="bg-slate-50 text-slate-500 uppercase font-bold border-y border-slate-200">
                   <th className="py-3 px-3">Student</th>
