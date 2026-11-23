@@ -268,9 +268,31 @@ export default function StudentApp({
   };
 
   // 1-Click Demo Login Helper
-  const handleDemoLogin = (id, pass) => {
+  const handleDemoLogin = async (id, pass) => {
     setLoginId(id);
     setLoginPassword(pass);
+    setLoginError('');
+    setIsLoggingIn(true);
+    try {
+      const res = await fetch('/api/students/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id.trim(), password: pass.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setLoginError(data.error || 'Invalid credentials.');
+      } else {
+        setCurrentStudent(data.student);
+        onLoginSuccess(data.student);
+        fetchStudentData(data.student.id);
+        triggerCelebration();
+      }
+    } catch (err) {
+      setLoginError('Unable to connect to tuition server.');
+    } finally {
+      setIsLoggingIn(false);
+    }
   };
 
   // Image processor for homework worksheets
