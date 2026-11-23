@@ -16,6 +16,30 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <script>
+      // Force instant cache purge and hard reload for old mobile apps/PWAs
+      (function() {
+        var LATEST_VERSION = 'v5_ultra_luxury_2026';
+        try {
+          var current = localStorage.getItem('aslp_client_build');
+          if (current !== LATEST_VERSION) {
+            localStorage.setItem('aslp_client_build', LATEST_VERSION);
+            if ('caches' in window) {
+              caches.keys().then(function(names) {
+                return Promise.all(names.map(function(name) { return caches.delete(name); }));
+              });
+            }
+            if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for (var i = 0; i < registrations.length; i++) {
+                  registrations[i].unregister();
+                }
+              });
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <script>
       // Capture PWA install prompt globally as early as possible so it is never missed
       window.deferredPrompt = null;
       window.addEventListener('beforeinstallprompt', function(e) {
@@ -24,37 +48,13 @@
         window.dispatchEvent(new CustomEvent('pwa-prompt-ready'));
       });
     </script>
-    <script>
-      // Self-healing: If an old service worker or browser cache served stale assets, clear cache and reload once
-      window.addEventListener('error', function(e) {
-        if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK')) {
-          if (!sessionStorage.getItem('arise_cache_cleared')) {
-            sessionStorage.setItem('arise_cache_cleared', '1');
-            if ('caches' in window) {
-              caches.keys().then(function(keys) {
-                return Promise.all(keys.map(function(k) { return caches.delete(k); }));
-              }).then(function() {
-                if ('serviceWorker' in navigator) {
-                  navigator.serviceWorker.getRegistrations().then(function(regs) {
-                    regs.forEach(function(r) { r.unregister(); });
-                  });
-                }
-                window.location.reload();
-              });
-            } else {
-              window.location.reload();
-            }
-          }
-        }
-      }, true);
-    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/assets/index-D99S8Be2.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-C1e2FQCc.css">
+    <script type="module" crossorigin src="/assets/index-BObgwfcH.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CawVfJ5x.css">
   </head>
-  <body class="bg-slate-50 text-slate-800 antialiased font-sans selection:bg-indigo-500 selection:text-white">
+  <body class="bg-[#070a13] text-slate-100 antialiased font-sans selection:bg-indigo-500 selection:text-white">
     <div id="root"></div>
   </body>
 </html>

@@ -793,11 +793,11 @@ export default function AdminApp({
       </div>
 
       {/* ADMIN NAVIGATION TABS (Horizontal scrolling pill dock on mobile & desktop) */}
-      <div className="bg-white p-2 rounded-2xl border border-slate-200/80 shadow-xs overflow-x-auto no-scrollbar flex items-center space-x-2 py-2">
+      <div className="bg-slate-900/90 backdrop-blur-xl p-2 rounded-2xl border border-slate-800 shadow-xl overflow-x-auto no-scrollbar flex items-center space-x-2 py-2">
         <button
           onClick={() => setActiveTab('students')}
           className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
-            activeTab === 'students' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+            activeTab === 'students' ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md border border-indigo-400/30' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
           }`}
         >
           <Users className="w-4 h-4" />
@@ -807,7 +807,7 @@ export default function AdminApp({
         <button
           onClick={() => setActiveTab('attendance')}
           className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
-            activeTab === 'attendance' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+            activeTab === 'attendance' ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md border border-indigo-400/30' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
           }`}
         >
           <Calendar className="w-4 h-4" />
@@ -817,7 +817,7 @@ export default function AdminApp({
         <button
           onClick={() => setActiveTab('fees')}
           className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
-            activeTab === 'fees' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+            activeTab === 'fees' ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md border border-indigo-400/30' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
           }`}
         >
           <DollarSign className="w-4 h-4" />
@@ -827,29 +827,29 @@ export default function AdminApp({
         <button
           onClick={() => setActiveTab('homeworks')}
           className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
-            activeTab === 'homeworks' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+            activeTab === 'homeworks' ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md border border-indigo-400/30' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
           }`}
         >
           <BookOpen className="w-4 h-4" />
           <span>Homeworks Desk ({homeworksList.length})</span>
-          {pendingHwCount > 0 && <span className="w-2 h-2 rounded-full bg-amber-400"></span>}
+          {pendingHwCount > 0 && <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>}
         </button>
 
         <button
           onClick={() => setActiveTab('feedbacks')}
           className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
-            activeTab === 'feedbacks' ? 'bg-amber-500 text-slate-950 shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+            activeTab === 'feedbacks' ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
           }`}
         >
           <MessageSquare className="w-4 h-4" />
           <span>Queries ({feedbacksList.length})</span>
-          {pendingFbCount > 0 && <span className="w-2 h-2 rounded-full bg-rose-500"></span>}
+          {pendingFbCount > 0 && <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>}
         </button>
 
         <button
           onClick={() => setActiveTab('announcements')}
           className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
-            activeTab === 'announcements' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+            activeTab === 'announcements' ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md border border-indigo-400/30' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
           }`}
         >
           <Bell className="w-4 h-4" />
@@ -861,13 +861,13 @@ export default function AdminApp({
       {/* 1. STUDENT DIRECTORY (CARDS ON MOBILE & DATA TABLE ON DESKTOP) */}
       {/* ============================================================ */}
       {activeTab === 'students' && (
-        <div className="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.03)] space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+        <div className="bg-[#0e162b]/85 backdrop-blur-xl rounded-3xl p-5 sm:p-7 border border-slate-800 shadow-[0_10px_35px_rgba(0,0,0,0.5)] space-y-5 text-white">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
             <div>
-              <h3 className="text-base sm:text-lg font-black text-slate-900 font-heading">
+              <h3 className="text-base sm:text-lg font-black text-white font-heading">
                 Student Directory & Credentials
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400">
                 Official roster with individual IDs, passwords & parent contact records.
               </p>
             </div>
@@ -881,14 +881,14 @@ export default function AdminApp({
                   placeholder="Search student, ID, school..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                  className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs font-medium text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
               </div>
 
               <select
                 value={gradeFilter}
                 onChange={(e) => setGradeFilter(e.target.value)}
-                className="w-full sm:w-auto px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="w-full sm:w-auto px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs font-semibold text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
               >
                 <option value="All">All Classes (LKG to 12th)</option>
                 <option value="LKG">LKG / UKG</option>
@@ -911,14 +911,14 @@ export default function AdminApp({
           {/* MOBILE VIEW: SLEEK STUDENT PROFILE CARDS */}
           <div className="sm:hidden space-y-3 pt-1">
             {filteredStudents.length === 0 ? (
-              <div className="text-center py-8 text-slate-400 text-xs bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+              <div className="text-center py-8 text-slate-500 text-xs bg-slate-900/60 rounded-2xl border border-dashed border-slate-800">
                 No students found matching your search.
               </div>
             ) : (
               filteredStudents.map((st) => (
                 <div 
                   key={st.id} 
-                  className="bg-slate-50/80 border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs hover:border-indigo-400 transition"
+                  className="bg-slate-900/85 border border-slate-800 rounded-3xl p-4 space-y-3 shadow-lg hover:border-slate-700 transition text-white"
                 >
                   <div className="flex items-start gap-3">
                     <div 
@@ -929,46 +929,46 @@ export default function AdminApp({
                       <img
                         src={st.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${st.id}`}
                         alt={st.name}
-                        className="w-13 h-13 rounded-2xl object-cover border-2 border-white shadow-sm ring-1 ring-slate-200"
+                        className="w-13 h-13 rounded-2xl object-cover border-2 border-amber-400 shadow-md ring-2 ring-amber-400/20"
                       />
-                      <span className="absolute -bottom-1 -right-1 p-1 bg-indigo-600 rounded-full text-white shadow-xs">
+                      <span className="absolute -bottom-1 -right-1 p-1 bg-amber-400 rounded-full text-slate-950 shadow-xs">
                         <Camera className="w-2.5 h-2.5" />
                       </span>
                     </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-1 flex-wrap">
-                        <h4 className="font-black text-sm text-slate-900 truncate">{st.name}</h4>
-                        <span className="text-[10px] font-mono font-bold bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full shrink-0">
+                        <h4 className="font-black text-sm text-white truncate">{st.name}</h4>
+                        <span className="text-[10px] font-mono font-bold bg-amber-400/15 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-full shrink-0">
                           {st.id}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500">
-                        <span>Roll: <strong className="text-slate-800 font-mono">{st.rollNo}</strong></span>
+                      <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-400">
+                        <span>Roll: <strong className="text-white font-mono">{st.rollNo}</strong></span>
                         <span>•</span>
-                        <span className="font-mono text-[11px] text-slate-600">Pass: <strong>{st.password}</strong></span>
+                        <span className="font-mono text-[11px] text-slate-400">Pass: <strong className="text-amber-300">{st.password}</strong></span>
                       </div>
 
-                      <p className="text-xs text-slate-600 font-medium truncate mt-0.5">{st.grade}</p>
-                      <p className="text-[11px] text-slate-400 truncate">{st.school}</p>
+                      <p className="text-xs text-slate-300 font-medium truncate mt-0.5">{st.grade}</p>
+                      <p className="text-[11px] text-slate-500 truncate">{st.school}</p>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/70 text-xs">
-                    <div className="bg-white p-2.5 rounded-2xl border border-slate-100">
+                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800 text-xs">
+                    <div className="bg-slate-950/80 p-2.5 rounded-2xl border border-slate-800">
                       <span className="text-[10px] text-slate-400 uppercase font-bold block">Parent / Guardian</span>
-                      <span className="font-bold text-slate-800 truncate block mt-0.5">{st.parentName}</span>
-                      <a href={`tel:${st.parentPhone}`} className="text-indigo-600 font-mono font-bold text-[11px] flex items-center gap-1 mt-0.5 hover:underline">
-                        <Phone className="w-3 h-3 text-emerald-500" />
+                      <span className="font-bold text-white truncate block mt-0.5">{st.parentName}</span>
+                      <a href={`tel:${st.parentPhone}`} className="text-amber-400 font-mono font-bold text-[11px] flex items-center gap-1 mt-0.5 hover:underline">
+                        <Phone className="w-3 h-3 text-emerald-400" />
                         <span>{st.parentPhone}</span>
                       </a>
                     </div>
 
-                    <div className="bg-white p-2.5 rounded-2xl border border-slate-100 flex flex-col justify-between">
+                    <div className="bg-slate-950/80 p-2.5 rounded-2xl border border-slate-800 flex flex-col justify-between">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] text-slate-400 uppercase font-bold">Attendance</span>
-                        <span className="font-bold text-slate-800 text-xs">{st.attendance?.percentage || 0}%</span>
+                        <span className="font-bold text-white text-xs">{st.attendance?.percentage || 0}%</span>
                       </div>
                       <div className="flex items-center justify-between mt-1">
                         <span className="text-[10px] text-slate-400 uppercase font-bold">Tuition Fee</span>
@@ -976,7 +976,7 @@ export default function AdminApp({
                           type="button"
                           onClick={() => handleToggleFeeStatus(st.id, st.fee?.status)}
                           className={`text-[10px] font-bold px-2 py-0.5 rounded-full cursor-pointer transition ${
-                            st.fee?.status === 'PAID' ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-rose-100 text-rose-800 hover:bg-rose-200'
+                            st.fee?.status === 'PAID' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
                           }`}
                         >
                           {st.fee?.status || 'PENDING'}
@@ -985,20 +985,20 @@ export default function AdminApp({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-200/70">
+                  <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800">
                     <button
                       type="button"
                       onClick={() => setEditingStudent({ ...st, monthlyFee: st.fee?.monthlyFee || 1500 })}
-                      className="py-2 px-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition border border-indigo-200 cursor-pointer"
+                      className="py-2 px-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition border border-slate-700 cursor-pointer"
                     >
-                      <Edit className="w-3.5 h-3.5" />
+                      <Edit className="w-3.5 h-3.5 text-indigo-400" />
                       <span>Edit</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => handleOpenPhotoModal(st)}
-                      className="py-2 px-2 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition border border-amber-200 cursor-pointer"
+                      className="py-2 px-2 bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition border border-amber-400/30 cursor-pointer"
                     >
                       <Camera className="w-3.5 h-3.5" />
                       <span>Photo</span>
@@ -1007,7 +1007,7 @@ export default function AdminApp({
                     <button
                       type="button"
                       onClick={() => handleDeleteStudent(st.id, st.name)}
-                      className="py-2 px-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition border border-rose-200 cursor-pointer"
+                      className="py-2 px-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition border border-rose-500/30 cursor-pointer"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                       <span>Delete</span>
@@ -1019,23 +1019,23 @@ export default function AdminApp({
           </div>
 
           {/* DESKTOP VIEW: EXECUTIVE DATA TABLE */}
-          <div className="hidden sm:block overflow-x-auto">
+          <div className="hidden sm:block overflow-x-auto border border-slate-800 rounded-2xl bg-slate-900/60">
             <table className="w-full text-left text-xs border-collapse min-w-[760px]">
               <thead>
-                <tr className="bg-slate-50 text-slate-500 uppercase font-extrabold border-y border-slate-200">
-                  <th className="py-3 px-3">Student</th>
-                  <th className="py-3 px-3">ID & Password</th>
-                  <th className="py-3 px-3">Grade & School</th>
-                  <th className="py-3 px-3">Parent & Contact</th>
-                  <th className="py-3 px-3">Attendance</th>
-                  <th className="py-3 px-3">Fee Status</th>
-                  <th className="py-3 px-3 text-right">Actions</th>
+                <tr className="bg-slate-950/90 text-slate-400 uppercase font-extrabold border-b border-slate-800">
+                  <th className="py-3 px-4">Student</th>
+                  <th className="py-3 px-4">ID & Password</th>
+                  <th className="py-3 px-4">Grade & School</th>
+                  <th className="py-3 px-4">Parent & Contact</th>
+                  <th className="py-3 px-4">Attendance</th>
+                  <th className="py-3 px-4">Fee Status</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-800/60 text-white">
                 {filteredStudents.map((st) => (
-                  <tr key={st.id} className="hover:bg-slate-50/80 transition">
-                    <td className="py-3 px-3">
+                  <tr key={st.id} className="hover:bg-slate-800/40 transition">
+                    <td className="py-3 px-4">
                       <div className="flex items-center space-x-3">
                         <div 
                           onClick={() => handleOpenPhotoModal(st)}
@@ -1045,55 +1045,55 @@ export default function AdminApp({
                           <img
                             src={st.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${st.id}`}
                             alt={st.name}
-                            className="w-10 h-10 rounded-xl object-cover border border-slate-200 shadow-xs"
+                            className="w-10 h-10 rounded-xl object-cover border border-amber-400/50 shadow-xs"
                           />
-                          <span className="absolute -bottom-1 -right-1 p-0.5 bg-indigo-600 rounded-full text-white">
+                          <span className="absolute -bottom-1 -right-1 p-0.5 bg-amber-400 rounded-full text-slate-950">
                             <Camera className="w-2.5 h-2.5" />
                           </span>
                         </div>
                         <div>
-                          <span className="font-extrabold text-slate-900 block text-xs">{st.name}</span>
+                          <span className="font-extrabold text-white block text-xs">{st.name}</span>
                           <span className="text-[11px] text-slate-400 font-mono">Roll: {st.rollNo}</span>
                         </div>
                       </div>
                     </td>
 
-                    <td className="py-3 px-3 font-mono">
-                      <span className="font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded text-[11px] block w-fit">
+                    <td className="py-3 px-4 font-mono">
+                      <span className="font-bold text-amber-300 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded text-[11px] block w-fit">
                         {st.id}
                       </span>
-                      <span className="text-slate-500 text-[11px] block mt-0.5">
-                        Pass: {st.password}
+                      <span className="text-slate-400 text-[11px] block mt-0.5">
+                        Pass: <strong className="text-white">{st.password}</strong>
                       </span>
                     </td>
 
-                    <td className="py-3 px-3">
-                      <span className="font-bold text-slate-800 block text-xs">{st.grade}</span>
+                    <td className="py-3 px-4">
+                      <span className="font-bold text-white block text-xs">{st.grade}</span>
                       <span className="text-slate-400 text-[11px] block truncate max-w-[180px]">{st.school}</span>
                     </td>
 
-                    <td className="py-3 px-3">
-                      <span className="font-semibold text-slate-800 block text-xs">{st.parentName}</span>
-                      <a href={`tel:${st.parentPhone}`} className="text-indigo-600 font-mono text-[11px] hover:underline flex items-center gap-1">
-                        <Phone className="w-2.5 h-2.5 text-emerald-500" />
+                    <td className="py-3 px-4">
+                      <span className="font-semibold text-white block text-xs">{st.parentName}</span>
+                      <a href={`tel:${st.parentPhone}`} className="text-amber-400 font-mono text-[11px] hover:underline flex items-center gap-1">
+                        <Phone className="w-2.5 h-2.5 text-emerald-400" />
                         <span>{st.parentPhone}</span>
                       </a>
                     </td>
 
-                    <td className="py-3 px-3">
-                      <span className="font-extrabold text-slate-900 block">{st.attendance?.percentage || 0}%</span>
+                    <td className="py-3 px-4">
+                      <span className="font-extrabold text-white block">{st.attendance?.percentage || 0}%</span>
                       <span className="text-[10px] text-slate-400 block">
                         {st.attendance?.attendedClasses || 0}/{st.attendance?.totalClasses || 0} classes
                       </span>
                     </td>
 
-                    <td className="py-3 px-3">
+                    <td className="py-3 px-4">
                       <button
                         onClick={() => handleToggleFeeStatus(st.id, st.fee?.status)}
                         className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold cursor-pointer transition ${
                           st.fee?.status === 'PAID'
-                            ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                            : 'bg-rose-100 text-rose-800 hover:bg-rose-200'
+                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30'
+                            : 'bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-500/30'
                         }`}
                         title="Click to toggle Paid/Pending"
                       >
@@ -1101,18 +1101,18 @@ export default function AdminApp({
                       </button>
                     </td>
 
-                    <td className="py-3 px-3 text-right">
+                    <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end space-x-1.5">
                         <button
                           onClick={() => setEditingStudent({ ...st, monthlyFee: st.fee?.monthlyFee || 1500 })}
-                          className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition"
+                          className="p-1.5 text-indigo-400 hover:bg-slate-800 rounded-lg transition"
                           title="Edit Student"
                         >
                           <Edit className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => handleDeleteStudent(st.id, st.name)}
-                          className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg transition"
+                          className="p-1.5 text-rose-400 hover:bg-slate-800 rounded-lg transition"
                           title="Delete Student"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -1131,24 +1131,24 @@ export default function AdminApp({
       {/* 2. BATCH ATTENDANCE MARKER                                   */}
       {/* ============================================================ */}
       {activeTab === 'attendance' && (
-        <div className="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.03)] space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+        <div className="bg-[#0e162b]/85 backdrop-blur-xl rounded-3xl p-5 sm:p-7 border border-slate-800 shadow-[0_10px_35px_rgba(0,0,0,0.5)] space-y-5 text-white">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
             <div>
-              <h3 className="text-base sm:text-lg font-black text-slate-900 font-heading">
+              <h3 className="text-base sm:text-lg font-black text-white font-heading">
                 Batch Attendance Marker
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400">
                 1-Click fast attendance register for evening tuition batches.
               </p>
             </div>
 
             <div className="flex items-center gap-2">
-              <label className="text-xs font-bold text-slate-600">Session Date:</label>
+              <label className="text-xs font-bold text-slate-300">Session Date:</label>
               <input
                 type="date"
                 value={attendanceDate}
                 onChange={(e) => setAttendanceDate(e.target.value)}
-                className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800"
+                className="px-3 py-1.5 bg-slate-950 border border-slate-700 rounded-xl text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
               />
             </div>
           </div>
@@ -1157,36 +1157,36 @@ export default function AdminApp({
             {studentsList.map((st) => (
               <div 
                 key={st.id}
-                className="p-4 bg-slate-50/80 rounded-2xl border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50 transition"
+                className="p-4 bg-slate-900/80 rounded-2xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-slate-700 transition text-white"
               >
                 <div className="flex items-center space-x-3">
                   <img
                     src={st.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${st.id}`}
                     alt={st.name}
-                    className="w-11 h-11 rounded-2xl object-cover border border-slate-200"
+                    className="w-11 h-11 rounded-2xl object-cover border border-amber-400/40"
                   />
                   <div>
-                    <span className="font-extrabold text-sm text-slate-900 block">{st.name}</span>
-                    <span className="text-xs text-slate-500 font-medium">{st.id} • {st.grade}</span>
+                    <span className="font-extrabold text-sm text-white block">{st.name}</span>
+                    <span className="text-xs text-slate-400 font-medium">{st.id} • {st.grade}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => handleUpdateAttendance(st.id, 'Present')}
-                    className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-xs transition cursor-pointer"
+                    className="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs rounded-xl shadow-xs transition cursor-pointer"
                   >
                     ✓ Present
                   </button>
                   <button
                     onClick={() => handleUpdateAttendance(st.id, 'Late')}
-                    className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs rounded-xl shadow-xs transition cursor-pointer"
+                    className="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-xs rounded-xl shadow-xs transition cursor-pointer"
                   >
                     Late
                   </button>
                   <button
                     onClick={() => handleUpdateAttendance(st.id, 'Absent')}
-                    className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs rounded-xl shadow-xs transition cursor-pointer"
+                    className="px-3.5 py-1.5 bg-rose-500 hover:bg-rose-600 text-white font-black text-xs rounded-xl shadow-xs transition cursor-pointer"
                   >
                     ✕ Absent
                   </button>
@@ -1201,13 +1201,13 @@ export default function AdminApp({
       {/* 3. TUITION FEES MANAGEMENT                                   */}
       {/* ============================================================ */}
       {activeTab === 'fees' && (
-        <div className="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.03)] space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+        <div className="bg-[#0e162b]/85 backdrop-blur-xl rounded-3xl p-5 sm:p-7 border border-slate-800 shadow-[0_10px_35px_rgba(0,0,0,0.5)] space-y-5 text-white">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
             <div>
-              <h3 className="text-base sm:text-lg font-black text-slate-900 font-heading">
+              <h3 className="text-base sm:text-lg font-black text-white font-heading">
                 Tuition Fee Collection Ledger
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400">
                 1-Click fee status toggles & customized monthly fees per student.
               </p>
             </div>
@@ -1217,17 +1217,17 @@ export default function AdminApp({
             {studentsList.map((st) => (
               <div
                 key={st.id}
-                className="p-4 bg-slate-50/80 rounded-2xl border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                className="p-4 bg-slate-900/80 rounded-2xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-slate-700 transition text-white"
               >
                 <div className="flex items-center space-x-3">
                   <img
                     src={st.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${st.id}`}
                     alt={st.name}
-                    className="w-11 h-11 rounded-2xl object-cover border border-slate-200"
+                    className="w-11 h-11 rounded-2xl object-cover border border-amber-400/40"
                   />
                   <div>
-                    <span className="font-extrabold text-sm text-slate-900 block">{st.name} ({st.id})</span>
-                    <span className="text-xs text-slate-500">Monthly Fee: ₹{st.fee?.monthlyFee || 1500} • Due: {st.fee?.nextDueDate || '5th Next Month'}</span>
+                    <span className="font-extrabold text-sm text-white block">{st.name} ({st.id})</span>
+                    <span className="text-xs text-slate-400">Monthly Fee: ₹{st.fee?.monthlyFee || 1500} • Due: {st.fee?.nextDueDate || '5th Next Month'}</span>
                   </div>
                 </div>
 
@@ -1236,8 +1236,8 @@ export default function AdminApp({
                     onClick={() => handleToggleFeeStatus(st.id, st.fee?.status)}
                     className={`px-4 py-2 rounded-xl text-xs font-black cursor-pointer shadow-xs transition ${
                       st.fee?.status === 'PAID'
-                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                        : 'bg-rose-600 hover:bg-rose-700 text-white animate-pulse'
+                        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30'
+                        : 'bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-500/30 animate-pulse'
                     }`}
                   >
                     {st.fee?.status === 'PAID' ? '✓ PAID IN FULL' : 'PAYMENT PENDING'}
@@ -1250,10 +1250,10 @@ export default function AdminApp({
                       setEditFeeDueDate(st.fee?.nextDueDate || '');
                       setEditFeeStatus(st.fee?.status || 'PAID');
                     }}
-                    className="p-2 bg-white border border-slate-300 hover:border-indigo-400 rounded-xl text-slate-700 text-xs font-bold transition cursor-pointer"
+                    className="p-2 bg-slate-800 border border-slate-700 hover:border-amber-400/50 rounded-xl text-slate-200 text-xs font-bold transition cursor-pointer"
                     title="Edit Fee Amount & Dates"
                   >
-                    <Edit className="w-4 h-4 text-indigo-600" />
+                    <Edit className="w-4 h-4 text-amber-400" />
                   </button>
                 </div>
               </div>
@@ -1266,44 +1266,44 @@ export default function AdminApp({
       {/* 4. HOMEWORKS SUPERVISION DESK                                */}
       {/* ============================================================ */}
       {activeTab === 'homeworks' && (
-        <div className="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.03)] space-y-5">
-          <div className="pb-4 border-b border-slate-100">
-            <h3 className="text-base sm:text-lg font-black text-slate-900 font-heading">
+        <div className="bg-[#0e162b]/85 backdrop-blur-xl rounded-3xl p-5 sm:p-7 border border-slate-800 shadow-[0_10px_35px_rgba(0,0,0,0.5)] space-y-5 text-white">
+          <div className="pb-4 border-b border-slate-800">
+            <h3 className="text-base sm:text-lg font-black text-white font-heading">
               School Homeworks Received ({homeworksList.length})
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-400">
               Worksheets shared by parents & students. Add faculty supervision remarks.
             </p>
           </div>
 
           {homeworksList.length === 0 ? (
-            <div className="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200 text-slate-400 text-xs">
+            <div className="text-center py-10 bg-slate-900/60 rounded-2xl border border-dashed border-slate-800 text-slate-500 text-xs">
               No worksheets shared yet.
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {homeworksList.map((hw) => (
-                <div key={hw.id} className="p-4 bg-slate-50/80 border border-slate-200 rounded-3xl space-y-3">
+                <div key={hw.id} className="p-4 bg-slate-900/80 border border-slate-800 rounded-3xl space-y-3 text-white">
                   <div className="flex items-start justify-between">
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-100/70 px-2.5 py-0.5 rounded-full">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300 bg-amber-400/10 border border-amber-400/20 px-2.5 py-0.5 rounded-full">
                         {hw.subject}
                       </span>
-                      <h4 className="text-xs font-bold text-slate-900 mt-1">Student: {hw.studentId}</h4>
+                      <h4 className="text-xs font-bold text-white mt-1">Student: {hw.studentId}</h4>
                     </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
                       {hw.status}
                     </span>
                   </div>
 
-                  <p className="text-xs text-slate-700 font-medium">"{hw.description}"</p>
+                  <p className="text-xs text-slate-300 font-medium">"{hw.description}"</p>
 
                   {hw.photoUrl && (
                     <div className="flex items-center gap-2">
                       <img
                         src={hw.photoUrl}
                         alt="Worksheet"
-                        className="w-12 h-12 rounded-xl object-cover border border-slate-200 cursor-pointer"
+                        className="w-12 h-12 rounded-xl object-cover border border-slate-700 cursor-pointer"
                         onClick={() => {
                           setModalPhoto(hw.photoUrl);
                           setModalTitle(`Worksheet: ${hw.subject}`);
@@ -1315,7 +1315,7 @@ export default function AdminApp({
                           setModalPhoto(hw.photoUrl);
                           setModalTitle(`Worksheet: ${hw.subject}`);
                         }}
-                        className="text-xs text-indigo-600 font-bold hover:underline"
+                        className="text-xs text-amber-400 font-bold hover:underline"
                       >
                         Enlarge Picture
                       </button>
@@ -1323,19 +1323,19 @@ export default function AdminApp({
                   )}
 
                   {hw.adminRemarks && (
-                    <div className="p-2.5 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900">
-                      <strong>Your Note:</strong> {hw.adminRemarks}
+                    <div className="p-2.5 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-xs text-indigo-300">
+                      <strong className="text-white">Your Note:</strong> {hw.adminRemarks}
                     </div>
                   )}
 
-                  <div className="pt-2 border-t border-slate-200/70 flex justify-end">
+                  <div className="pt-2 border-t border-slate-800 flex justify-end">
                     <button
                       onClick={() => {
                         setSelectedHw(hw);
                         setHwRemarkText(hw.adminRemarks || '');
                         setHwStatusSelect(hw.status || 'Reviewed');
                       }}
-                      className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition cursor-pointer"
+                      className="px-3 py-1.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 rounded-xl text-xs font-black transition cursor-pointer"
                     >
                       Add Master Remark
                     </button>
@@ -1351,47 +1351,47 @@ export default function AdminApp({
       {/* 5. PARENT INQUIRIES & HELPDESK                               */}
       {/* ============================================================ */}
       {activeTab === 'feedbacks' && (
-        <div className="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.03)] space-y-5">
-          <div className="pb-4 border-b border-slate-100">
-            <h3 className="text-base sm:text-lg font-black text-slate-900 font-heading">
+        <div className="bg-[#0e162b]/85 backdrop-blur-xl rounded-3xl p-5 sm:p-7 border border-slate-800 shadow-[0_10px_35px_rgba(0,0,0,0.5)] space-y-5 text-white">
+          <div className="pb-4 border-b border-slate-800">
+            <h3 className="text-base sm:text-lg font-black text-white font-heading">
               Parent & Student Inquiries ({feedbacksList.length})
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-400">
               Direct questions submitted from student portal.
             </p>
           </div>
 
           {feedbacksList.length === 0 ? (
-            <div className="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200 text-slate-400 text-xs">
+            <div className="text-center py-10 bg-slate-900/60 rounded-2xl border border-dashed border-slate-800 text-slate-500 text-xs">
               No inquiries received.
             </div>
           ) : (
             <div className="space-y-3">
               {feedbacksList.map((fb) => (
-                <div key={fb.id} className="p-4 bg-slate-50/80 border border-slate-200 rounded-2xl space-y-2">
+                <div key={fb.id} className="p-4 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-2 text-white">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded">
+                    <span className="text-[10px] font-bold bg-amber-400/10 text-amber-300 border border-amber-400/20 px-2 py-0.5 rounded">
                       {fb.category} • Student: {fb.studentId}
                     </span>
-                    <span className="text-[11px] text-slate-400 font-mono">{fb.submittedAt}</span>
+                    <span className="text-[11px] text-slate-500 font-mono">{fb.submittedAt}</span>
                   </div>
 
-                  <p className="text-xs text-slate-800 font-medium">"{fb.message}"</p>
+                  <p className="text-xs text-slate-200 font-medium">"{fb.message}"</p>
 
                   {fb.adminReply && (
-                    <div className="p-2.5 bg-white border border-emerald-200 rounded-xl text-xs text-slate-800">
-                      <strong className="text-emerald-700 block text-[11px]">Your Reply:</strong>
-                      <p className="text-slate-700 mt-0.5">{fb.adminReply}</p>
+                    <div className="p-2.5 bg-slate-950 border border-emerald-500/30 rounded-xl text-xs text-white">
+                      <strong className="text-emerald-400 block text-[11px]">Your Reply:</strong>
+                      <p className="text-slate-300 mt-0.5">{fb.adminReply}</p>
                     </div>
                   )}
 
-                  <div className="pt-2 border-t border-slate-200/70 flex justify-end">
+                  <div className="pt-2 border-t border-slate-800 flex justify-end">
                     <button
                       onClick={() => {
                         setSelectedFb(fb);
                         setReplyText(fb.adminReply || '');
                       }}
-                      className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-xs transition cursor-pointer"
+                      className="px-3 py-1.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black rounded-xl text-xs transition cursor-pointer"
                     >
                       {fb.adminReply ? 'Edit Reply' : 'Reply to Query'}
                     </button>
@@ -1407,19 +1407,19 @@ export default function AdminApp({
       {/* 6. ANNOUNCEMENTS HUB                                         */}
       {/* ============================================================ */}
       {activeTab === 'announcements' && (
-        <div className="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.03)] space-y-5">
-          <div className="pb-4 border-b border-slate-100">
-            <h3 className="text-base sm:text-lg font-black text-slate-900 font-heading">
+        <div className="bg-[#0e162b]/85 backdrop-blur-xl rounded-3xl p-5 sm:p-7 border border-slate-800 shadow-[0_10px_35px_rgba(0,0,0,0.5)] space-y-5 text-white">
+          <div className="pb-4 border-b border-slate-800">
+            <h3 className="text-base sm:text-lg font-black text-white font-heading">
               Broadcast Notices & Circulars
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-400">
               Publish center announcements visible instantly on all student portals.
             </p>
           </div>
 
-          <form onSubmit={handleCreateAnnouncement} className="p-4 bg-indigo-50/40 rounded-2xl border border-indigo-100 space-y-3">
+          <form onSubmit={handleCreateAnnouncement} className="p-4 bg-slate-900/80 rounded-2xl border border-slate-800 space-y-3 text-white">
             <div>
-              <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-1">
                 Notice Title *
               </label>
               <input
@@ -1428,12 +1428,12 @@ export default function AdminApp({
                 placeholder="e.g. Special Sunday Chemistry Numerical Batch"
                 value={newAnnTitle}
                 onChange={(e) => setNewAnnTitle(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-800"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-1">
                 Content Details *
               </label>
               <textarea
@@ -1442,14 +1442,14 @@ export default function AdminApp({
                 placeholder="Notice description..."
                 value={newAnnContent}
                 onChange={(e) => setNewAnnContent(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-800"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs font-medium text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
               ></textarea>
             </div>
 
             <div className="text-right">
               <button
                 type="submit"
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-extrabold cursor-pointer"
+                className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white rounded-xl text-xs font-black cursor-pointer shadow-md"
               >
                 Broadcast Notice
               </button>
@@ -1458,17 +1458,17 @@ export default function AdminApp({
 
           <div className="space-y-3 pt-3">
             {announcementsList.map((ann) => (
-              <div key={ann.id} className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-start justify-between gap-3">
+              <div key={ann.id} className="p-4 bg-slate-900/80 rounded-2xl border border-slate-800 flex items-start justify-between gap-3 text-white">
                 <div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
                     {ann.category}
                   </span>
-                  <h4 className="font-bold text-xs text-slate-900 mt-1">{ann.title}</h4>
-                  <p className="text-xs text-slate-600 mt-0.5">{ann.content}</p>
+                  <h4 className="font-bold text-xs text-white mt-1">{ann.title}</h4>
+                  <p className="text-xs text-slate-300 mt-0.5">{ann.content}</p>
                 </div>
                 <button
                   onClick={() => handleDeleteAnnouncement(ann.id)}
-                  className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg cursor-pointer"
+                  className="p-1.5 text-rose-400 hover:bg-slate-800 rounded-lg cursor-pointer"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
@@ -1484,114 +1484,114 @@ export default function AdminApp({
 
       {/* ENROL NEW STUDENT MODAL */}
       {isAddStudentOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-          <div className="bg-white rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto border border-slate-200 shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-              <h3 className="font-black text-base text-slate-900 font-heading">Enrol New Student</h3>
-              <button onClick={() => setIsAddStudentOpen(false)} className="p-1 text-slate-400 hover:text-slate-700 cursor-pointer">✕</button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+          <div className="bg-[#0e162b] rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto border border-slate-700 shadow-2xl text-white">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+              <h3 className="font-black text-base text-white font-heading">Enrol New Student</h3>
+              <button onClick={() => setIsAddStudentOpen(false)} className="p-1 text-slate-400 hover:text-white cursor-pointer">✕</button>
             </div>
 
             <form onSubmit={handleAddStudent} className="space-y-3 text-xs">
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Student ID *</label>
+                <label className="font-bold text-slate-300 block mb-1">Student ID *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. ASLP-107"
                   value={newStudId}
                   onChange={(e) => setNewStudId(e.target.value.toUpperCase())}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Student Full Name *</label>
+                <label className="font-bold text-slate-300 block mb-1">Student Full Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Danish Ahmed"
                   value={newStudName}
                   onChange={(e) => setNewStudName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Portal Password</label>
+                <label className="font-bold text-slate-300 block mb-1">Portal Password</label>
                 <input
                   type="text"
                   placeholder="pass107"
                   value={newStudPassword}
                   onChange={(e) => setNewStudPassword(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-mono"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-mono text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="font-bold text-slate-700 block mb-1">Grade / Class</label>
+                  <label className="font-bold text-slate-300 block mb-1">Grade / Class</label>
                   <input
                     type="text"
                     value={newStudGrade}
                     onChange={(e) => setNewStudGrade(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-slate-700 block mb-1">Monthly Tuition Fee (₹)</label>
+                  <label className="font-bold text-slate-300 block mb-1">Monthly Tuition Fee (₹)</label>
                   <input
                     type="number"
                     value={newStudFee}
                     onChange={(e) => setNewStudFee(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">School Name</label>
+                <label className="font-bold text-slate-300 block mb-1">School Name</label>
                 <input
                   type="text"
                   value={newStudSchool}
                   onChange={(e) => setNewStudSchool(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="font-bold text-slate-700 block mb-1">Parent Name</label>
+                  <label className="font-bold text-slate-300 block mb-1">Parent Name</label>
                   <input
                     type="text"
                     placeholder="Parent name"
                     value={newStudParentName}
                     onChange={(e) => setNewStudParentName(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-slate-700 block mb-1">Parent Contact</label>
+                  <label className="font-bold text-slate-300 block mb-1">Parent Contact</label>
                   <input
                     type="text"
                     placeholder="9842385666"
                     value={newStudParentPhone}
                     onChange={(e) => setNewStudParentPhone(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-mono"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-mono text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                   />
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-100 flex justify-end gap-2">
+              <div className="pt-3 border-t border-slate-800 flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsAddStudentOpen(false)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-bold cursor-pointer"
+                  className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-bold cursor-pointer hover:bg-slate-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-indigo-600 text-white rounded-xl font-black cursor-pointer shadow-md"
+                  className="px-5 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 rounded-xl font-black cursor-pointer shadow-md"
                 >
                   Save & Enrol
                 </button>
@@ -1603,98 +1603,98 @@ export default function AdminApp({
 
       {/* EDIT STUDENT PROFILE MODAL */}
       {editingStudent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-          <div className="bg-white rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto border border-slate-200 shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-              <h3 className="font-black text-base text-slate-900 font-heading">Edit {editingStudent.name} ({editingStudent.id})</h3>
-              <button onClick={() => setEditingStudent(null)} className="p-1 text-slate-400 hover:text-slate-700 cursor-pointer">✕</button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+          <div className="bg-[#0e162b] rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto border border-slate-700 shadow-2xl text-white">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+              <h3 className="font-black text-base text-white font-heading">Edit {editingStudent.name} ({editingStudent.id})</h3>
+              <button onClick={() => setEditingStudent(null)} className="p-1 text-slate-400 hover:text-white cursor-pointer">✕</button>
             </div>
 
             <form onSubmit={handleSaveEditStudent} className="space-y-3 text-xs">
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Student Full Name</label>
+                <label className="font-bold text-slate-300 block mb-1">Student Full Name</label>
                 <input
                   type="text"
                   required
                   value={editingStudent.name}
                   onChange={(e) => setEditingStudent({ ...editingStudent, name: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Password</label>
+                <label className="font-bold text-slate-300 block mb-1">Password</label>
                 <input
                   type="text"
                   value={editingStudent.password}
                   onChange={(e) => setEditingStudent({ ...editingStudent, password: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-mono"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-mono text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="font-bold text-slate-700 block mb-1">Grade / Class</label>
+                  <label className="font-bold text-slate-300 block mb-1">Grade / Class</label>
                   <input
                     type="text"
                     value={editingStudent.grade}
                     onChange={(e) => setEditingStudent({ ...editingStudent, grade: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-slate-700 block mb-1">Monthly Tuition Fee (₹)</label>
+                  <label className="font-bold text-slate-300 block mb-1">Monthly Tuition Fee (₹)</label>
                   <input
                     type="number"
                     value={editingStudent.monthlyFee}
                     onChange={(e) => setEditingStudent({ ...editingStudent, monthlyFee: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">School</label>
+                <label className="font-bold text-slate-300 block mb-1">School</label>
                 <input
                   type="text"
                   value={editingStudent.school}
                   onChange={(e) => setEditingStudent({ ...editingStudent, school: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="font-bold text-slate-700 block mb-1">Parent Name</label>
+                  <label className="font-bold text-slate-300 block mb-1">Parent Name</label>
                   <input
                     type="text"
                     value={editingStudent.parentName}
                     onChange={(e) => setEditingStudent({ ...editingStudent, parentName: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-slate-700 block mb-1">Parent Contact</label>
+                  <label className="font-bold text-slate-300 block mb-1">Parent Contact</label>
                   <input
                     type="text"
                     value={editingStudent.parentPhone}
                     onChange={(e) => setEditingStudent({ ...editingStudent, parentPhone: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-mono"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-mono text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                   />
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-100 flex justify-end gap-2">
+              <div className="pt-3 border-t border-slate-800 flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setEditingStudent(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-bold cursor-pointer"
+                  className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-bold cursor-pointer hover:bg-slate-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-indigo-600 text-white rounded-xl font-black cursor-pointer shadow-md"
+                  className="px-5 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 rounded-xl font-black cursor-pointer shadow-md"
                 >
                   Save Changes
                 </button>
@@ -1706,24 +1706,24 @@ export default function AdminApp({
 
       {/* CHANGE STUDENT PHOTO MODAL */}
       {selectedPhotoStudent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-          <div className="bg-white rounded-3xl p-6 max-w-sm w-full border border-slate-200 shadow-2xl text-center">
-            <h3 className="font-black text-sm text-slate-900 font-heading mb-1">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+          <div className="bg-[#0e162b] rounded-3xl p-6 max-w-sm w-full border border-slate-700 shadow-2xl text-center text-white">
+            <h3 className="font-black text-sm text-white font-heading mb-1">
               Update Student Photo
             </h3>
-            <p className="text-xs text-slate-500 mb-4">{selectedPhotoStudent.name} ({selectedPhotoStudent.id})</p>
+            <p className="text-xs text-slate-400 mb-4">{selectedPhotoStudent.name} ({selectedPhotoStudent.id})</p>
 
             <div className="flex justify-center mb-4">
               <img
                 src={studentPhotoPreview}
                 alt="Preview"
-                className="w-28 h-28 rounded-3xl object-cover border-4 border-amber-400 shadow-md ring-2 ring-slate-100"
+                className="w-28 h-28 rounded-3xl object-cover border-4 border-amber-400 shadow-xl ring-2 ring-white/10"
               />
             </div>
 
             <form onSubmit={handleSaveStudentPhoto} className="space-y-3">
-              <label className="w-full py-2.5 px-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs rounded-xl border border-indigo-200 flex items-center justify-center gap-2 cursor-pointer transition shadow-xs">
-                <Camera className="w-4 h-4" />
+              <label className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold text-xs rounded-xl border border-amber-400/40 flex items-center justify-center gap-2 cursor-pointer transition shadow-xs">
+                <Camera className="w-4 h-4 text-amber-400" />
                 <span>Select New Photo / Camera</span>
                 <input
                   type="file"
@@ -1741,14 +1741,14 @@ export default function AdminApp({
                 <button
                   type="button"
                   onClick={() => setSelectedPhotoStudent(null)}
-                  className="flex-1 py-2 bg-slate-100 text-slate-700 text-xs font-bold rounded-xl cursor-pointer"
+                  className="flex-1 py-2 bg-slate-800 text-slate-300 text-xs font-bold rounded-xl cursor-pointer hover:bg-slate-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isUpdatingPhoto}
-                  className="flex-1 py-2 bg-indigo-600 text-white text-xs font-black rounded-xl cursor-pointer shadow-md"
+                  className="flex-1 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 text-xs font-black rounded-xl cursor-pointer shadow-md"
                 >
                   {isUpdatingPhoto ? 'Saving...' : 'Apply Photo'}
                 </button>
@@ -1760,59 +1760,59 @@ export default function AdminApp({
 
       {/* EDIT FEE MODAL */}
       {selectedFeeStudent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-          <div className="bg-white rounded-3xl p-6 max-w-sm w-full border border-slate-200 shadow-2xl">
-            <h3 className="font-black text-sm text-slate-900 font-heading mb-1">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+          <div className="bg-[#0e162b] rounded-3xl p-6 max-w-sm w-full border border-slate-700 shadow-2xl text-white">
+            <h3 className="font-black text-sm text-white font-heading mb-1">
               Adjust Tuition Fee
             </h3>
-            <p className="text-xs text-slate-500 mb-4">{selectedFeeStudent.name} ({selectedFeeStudent.id})</p>
+            <p className="text-xs text-slate-400 mb-4">{selectedFeeStudent.name} ({selectedFeeStudent.id})</p>
 
             <form onSubmit={handleSaveFeeModal} className="space-y-3 text-xs">
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Monthly Tuition Fee (₹)</label>
+                <label className="font-bold text-slate-300 block mb-1">Monthly Tuition Fee (₹)</label>
                 <input
                   type="number"
                   required
                   value={editFeeAmount}
                   onChange={(e) => setEditFeeAmount(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Next Due Date</label>
+                <label className="font-bold text-slate-300 block mb-1">Next Due Date</label>
                 <input
                   type="text"
                   placeholder="e.g. 05th of Next Month"
                   value={editFeeDueDate}
                   onChange={(e) => setEditFeeDueDate(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Payment Status</label>
+                <label className="font-bold text-slate-300 block mb-1">Payment Status</label>
                 <select
                   value={editFeeStatus}
                   onChange={(e) => setEditFeeStatus(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                 >
                   <option value="PAID">PAID IN FULL</option>
                   <option value="PENDING">PAYMENT PENDING</option>
                 </select>
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={() => setSelectedFeeStudent(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-bold cursor-pointer"
+                  className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-bold cursor-pointer hover:bg-slate-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-xl font-black cursor-pointer shadow-md"
+                  className="px-4 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 rounded-xl font-black cursor-pointer shadow-md"
                 >
                   Save Fee
                 </button>
@@ -1824,18 +1824,18 @@ export default function AdminApp({
 
       {/* HOMEWORK REVIEW DRAWER */}
       {selectedHw && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full border border-slate-200 shadow-2xl">
-            <h3 className="font-black text-sm text-slate-900 font-heading mb-1">Tuition Master Supervision</h3>
-            <p className="text-xs text-slate-500 mb-4">Subject: {selectedHw.subject} • Student: {selectedHw.studentId}</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+          <div className="bg-[#0e162b] rounded-3xl p-6 max-w-md w-full border border-slate-700 shadow-2xl text-white">
+            <h3 className="font-black text-sm text-white font-heading mb-1">Tuition Master Supervision</h3>
+            <p className="text-xs text-slate-400 mb-4">Subject: {selectedHw.subject} • Student: {selectedHw.studentId}</p>
 
             <form onSubmit={handleReviewHomework} className="space-y-3 text-xs">
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Status</label>
+                <label className="font-bold text-slate-300 block mb-1">Status</label>
                 <select
                   value={hwStatusSelect}
                   onChange={(e) => setHwStatusSelect(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                 >
                   <option value="Reviewed">Reviewed & Supervised</option>
                   <option value="Completed">Completed Fully</option>
@@ -1844,13 +1844,13 @@ export default function AdminApp({
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Teacher Remarks / Guidance Note</label>
+                <label className="font-bold text-slate-300 block mb-1">Teacher Remarks / Guidance Note</label>
                 <textarea
                   rows="3"
                   placeholder="e.g. Completed with 95% accuracy. Good step-by-step working."
                   value={hwRemarkText}
                   onChange={(e) => setHwRemarkText(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
                 ></textarea>
               </div>
 
@@ -1858,13 +1858,13 @@ export default function AdminApp({
                 <button
                   type="button"
                   onClick={() => setSelectedHw(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-bold cursor-pointer"
+                  className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-bold cursor-pointer hover:bg-slate-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-xl font-black cursor-pointer shadow-md"
+                  className="px-4 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 rounded-xl font-black cursor-pointer shadow-md"
                 >
                   Save Remark
                 </button>
@@ -1876,21 +1876,21 @@ export default function AdminApp({
 
       {/* FEEDBACK REPLY DRAWER */}
       {selectedFb && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full border border-slate-200 shadow-2xl">
-            <h3 className="font-black text-sm text-slate-900 font-heading mb-1">Reply to Parent Inquiry</h3>
-            <p className="text-xs text-slate-500 mb-3">"{selectedFb.message}"</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+          <div className="bg-[#0e162b] rounded-3xl p-6 max-w-md w-full border border-slate-700 shadow-2xl text-white">
+            <h3 className="font-black text-sm text-white font-heading mb-1">Reply to Parent Inquiry</h3>
+            <p className="text-xs text-slate-400 mb-3">"{selectedFb.message}"</p>
 
             <form onSubmit={handleReplyFeedback} className="space-y-3 text-xs">
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Your Response Note</label>
+                <label className="font-bold text-slate-300 block mb-1">Your Response Note</label>
                 <textarea
                   rows="3"
                   required
                   placeholder="Type your response from Tuition Center Administration..."
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
                 ></textarea>
               </div>
 
@@ -1898,13 +1898,13 @@ export default function AdminApp({
                 <button
                   type="button"
                   onClick={() => setSelectedFb(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-bold cursor-pointer"
+                  className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-bold cursor-pointer hover:bg-slate-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-amber-500 text-slate-950 rounded-xl font-black cursor-pointer shadow-md"
+                  className="px-4 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 rounded-xl font-black cursor-pointer shadow-md"
                 >
                   Dispatch Reply
                 </button>
