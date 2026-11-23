@@ -155,11 +155,11 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070a13] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white pb-safe relative overflow-x-hidden">
-      {/* Ambient Luxury Lighting Orbs */}
-      <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
-      <div className="fixed top-1/3 right-0 w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[100px] pointer-events-none -z-10"></div>
-      <div className="fixed bottom-0 left-10 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+    <div className="min-h-screen bg-black text-[#f5f5f7] flex flex-col selection:bg-indigo-500 selection:text-white pb-safe relative overflow-x-hidden">
+      {/* Ambient Lighting Orbs */}
+      <div className="fixed top-0 left-1/3 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+      <div className="fixed top-1/2 right-0 w-[450px] h-[450px] bg-amber-500/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+      <div className="fixed bottom-0 left-10 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
 
       {/* Navigation Bar */}
       <Navbar
@@ -173,26 +173,23 @@ export default function App() {
         isStandaloneApp={isStandaloneApp}
       />
 
-      {/* Prominent Install Prompt Banner (Sleek, single-line responsive) */}
+      {/* Apple Dynamic Island Floating Pill Banner */}
       {!isStandaloneApp && !isBannerDismissed && (
-        <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-semibold shadow-xs border-b border-amber-600/20">
-          <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+        <div className="px-4 py-2 flex justify-center sticky top-15 z-30 pointer-events-none">
+          <div className="pointer-events-auto bg-neutral-900/90 backdrop-blur-2xl border border-white/15 text-white px-4 py-2 rounded-full text-xs font-semibold shadow-2xl flex items-center justify-between gap-3 max-w-lg w-full">
             <div className="flex items-center space-x-2 min-w-0">
-              <span className="p-1 bg-slate-950 text-amber-400 rounded-md shrink-0">
-                <Smartphone className="w-3.5 h-3.5" />
-              </span>
-              <span className="truncate sm:whitespace-normal">
-                <strong className="hidden sm:inline">For the best experience: </strong>
-                <span>Install <strong>Arise & Shine App</strong> on phone</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+              <span className="truncate text-neutral-300">
+                Install <strong>Arise & Shine App</strong> for best mobile experience
               </span>
             </div>
-            <div className="flex items-center space-x-1.5 shrink-0">
+            <div className="flex items-center space-x-2 shrink-0">
               <button
                 type="button"
                 onClick={() => setIsInstallModalOpen(true)}
-                className="bg-slate-950 hover:bg-slate-900 text-white px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold transition cursor-pointer shadow-xs whitespace-nowrap"
+                className="bg-white hover:bg-neutral-200 text-black px-3 py-1 rounded-full text-[11px] font-black transition active:scale-95 cursor-pointer shadow-sm"
               >
-                Install App
+                Install
               </button>
               <button
                 type="button"
@@ -200,8 +197,8 @@ export default function App() {
                   setIsBannerDismissed(true);
                   sessionStorage.setItem('arise_install_banner_dismissed', 'true');
                 }}
-                className="p-1 text-slate-900 hover:text-slate-700 rounded transition cursor-pointer font-bold text-xs"
-                title="Dismiss Banner"
+                className="p-1 text-neutral-400 hover:text-white rounded-full transition cursor-pointer text-xs"
+                title="Dismiss"
               >
                 ✕
               </button>
@@ -239,45 +236,44 @@ export default function App() {
         deferredPrompt={deferredPrompt}
       />
 
-      {/* Global Footer */}
-      <footer className="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-800 text-center md:text-left">
+      {/* Global Apple Cupertino Footer */}
+      <footer className="bg-black text-neutral-400 text-xs py-10 border-t border-white/10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-white/10 text-center md:text-left">
             <div className="flex items-center space-x-3.5">
               <img 
                 src="/logo.png" 
                 alt="Arise & Shine Logo" 
-                className="w-12 h-12 object-contain shrink-0 drop-shadow-sm" 
+                className="w-10 h-10 object-contain shrink-0 drop-shadow-md" 
               />
               <div>
                 <div className="flex items-center justify-center md:justify-start gap-2">
-                  <span className="text-white font-black text-base font-heading">
-                    ARISE AND SHINE TUITION CENTER
+                  <span className="text-white font-black text-sm tracking-tight font-heading">
+                    ARISE AND SHINE LEARNING POINT
                   </span>
-                  <span className="text-[10px] bg-amber-400 text-slate-950 font-bold px-1.5 py-0.2 rounded">
+                  <span className="text-[10px] bg-white/10 text-neutral-300 font-bold px-2 py-0.5 rounded-full border border-white/10">
                     Melvisharam
                   </span>
                 </div>
-                <p className="text-slate-400 text-xs mt-1">
-                  Coaching & Tuition for Classes LKG to 12th Std • State Board, Matriculation & CBSE
+                <p className="text-neutral-400 text-xs mt-0.5">
+                  Academic Tuition & Mentorship • Classes LKG to 12th Std
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-4 text-slate-300">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-neutral-300">
               <a 
                 href="https://maps.app.goo.gl/HvDyLK4yPX7bpAeF9?g_st=ic" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="flex items-center gap-1.5 hover:text-amber-400 transition underline underline-offset-4 decoration-slate-600 hover:decoration-amber-400"
-                title="Open location on Google Maps"
+                className="flex items-center gap-1.5 hover:text-white transition"
               >
-                <MapPin className="w-4 h-4 text-rose-400" />
+                <MapPin className="w-3.5 h-3.5 text-rose-400" />
                 <span>Melvisharam Center (Google Maps)</span>
               </a>
               <div className="flex items-center gap-1.5">
-                <Phone className="w-4 h-4 text-emerald-400" />
-                <span>Call / WhatsApp:</span>
+                <Phone className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Call:</span>
                 <a href="tel:6379840006" className="text-white font-bold hover:text-amber-400">6379840006</a>
                 <span>,</span>
                 <a href="tel:9842385666" className="text-white font-bold hover:text-amber-400">9842385666</a>
@@ -285,17 +281,15 @@ export default function App() {
             </div>
           </div>
 
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500">
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-neutral-500">
             <span>© {new Date().getFullYear()} ARISE AND SHINE LEARNING POINT. All Rights Reserved.</span>
             {!isStandaloneApp && (
-              <div className="flex items-center space-x-3">
-                <button 
-                  onClick={() => setIsInstallModalOpen(true)} 
-                  className="text-amber-400 hover:text-amber-300 transition cursor-pointer font-bold"
-                >
-                  Download Mobile App
-                </button>
-              </div>
+              <button 
+                onClick={() => setIsInstallModalOpen(true)} 
+                className="text-white hover:text-neutral-300 transition cursor-pointer font-bold"
+              >
+                Download Mobile App (.apk)
+              </button>
             )}
           </div>
         </div>

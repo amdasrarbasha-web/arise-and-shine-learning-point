@@ -1,5 +1,5 @@
-// Arise and Shine Learning Point Service Worker v5 - Ultra Luxury Redesign
-const CACHE_NAME = 'arise-shine-v5-luxury';
+// Arise and Shine Learning Point Service Worker v6 - Apple Cupertino Luxury Standard
+const CACHE_NAME = 'arise-shine-v6-apple';
 const STATIC_ASSETS = [
   '/manifest.json',
   '/logo.png',

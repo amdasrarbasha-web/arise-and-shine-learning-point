@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 const DB_FILE = path.join(__dirname, 'data', 'db.json');
 const BACKUP_FILE = path.join(__dirname, 'data', 'db.backup.json');
 

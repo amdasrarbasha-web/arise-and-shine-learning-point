@@ -2,60 +2,146 @@
 
 @layer base {
   body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Plus Jakarta Sans', system-ui, sans-serif;
     -webkit-tap-highlight-color: transparent;
-    letter-spacing: -0.011em;
+    letter-spacing: -0.015em;
+    background-color: #000000;
+    color: #f5f5f7;
+    overflow-x: hidden;
   }
   h1, h2, h3, h4, h5, h6, .font-heading {
-    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-    letter-spacing: -0.02em;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Outfit', sans-serif;
+    letter-spacing: -0.025em;
+    font-weight: 700;
   }
 }
 
-/* Safe area padding for mobile devices with notches / home indicators */
+/* Safe area padding for mobile devices */
 .pb-safe {
   padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
 }
 
-/* Custom Scrollbars */
+/* Apple Smooth Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: rgba(255, 255, 255, 0.3);
 }
 
-/* Smooth Interactive Glassmorphism */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(226, 232, 240, 0.9);
+/* Apple Cupertino Glassmorphism & Cards */
+.apple-glass {
+  background: rgba(18, 18, 24, 0.72);
+  backdrop-filter: blur(40px) saturate(190%);
+  -webkit-backdrop-filter: blur(40px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
 }
 
-.glass-panel-dark {
-  background: rgba(15, 23, 42, 0.85);
+.apple-glass-card {
+  background: linear-gradient(180deg, rgba(26, 26, 36, 0.75) 0%, rgba(14, 14, 20, 0.85) 100%);
+  backdrop-filter: blur(36px) saturate(180%);
+  -webkit-backdrop-filter: blur(36px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.7);
+  border-radius: 1.5rem;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-glass-interactive {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.apple-glass-interactive:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+.apple-glass-interactive:active {
+  transform: scale(0.985);
+}
+
+/* Apple Segmented Controller */
+.apple-segmented-track {
+  background: rgba(30, 30, 40, 0.6);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+  padding: 4px;
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(241, 245, 249, 1);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+.apple-segmented-item-active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* 3D Card Flip Utilities */
+/* Apple Wallet Titanium / Obsidian Pass */
+.apple-wallet-pass {
+  background: linear-gradient(135deg, #1c1d24 0%, #0d0e14 50%, #15161e 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 1px 1px rgba(255, 255, 255, 0.15) inset;
+  position: relative;
+  overflow: hidden;
+}
+
+.apple-wallet-pass::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Titanium sheen animation */
+@keyframes titaniumSheen {
+  0% { transform: translateX(-150%) rotate(25deg); }
+  100% { transform: translateX(250%) rotate(25deg); }
+}
+
+.animate-titanium-sheen::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 60%;
+  height: 300%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: titaniumSheen 6s infinite;
+  pointer-events: none;
+}
+
+/* Apple Glow Gradients */
+.apple-text-gradient-gold {
+  background: linear-gradient(135deg, #fff2cc 0%, #ffd066 40%, #e6a100 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.apple-text-gradient-silver {
+  background: linear-gradient(180deg, #ffffff 0%, #d1d5db 60%, #9ca3af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.apple-text-gradient-vibrant {
+  background: linear-gradient(135deg, #60a5fa 0%, #a855f7 50%, #f43f5e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 3D Perspective for Card Flip */
 .perspective-1000 {
   perspective: 1000px;
 }
@@ -70,78 +156,39 @@
   transform: rotateY(180deg);
 }
 
-/* Shimmer & Ambient Glows */
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-.animate-shimmer {
-  position: relative;
-  overflow: hidden;
-}
-.animate-shimmer::after {
-  content: '';
+/* Subtle Ambient Glow Orbs */
+.ambient-glow-orb-purple {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-  transform: translateX(-100%);
-  animation: shimmer 2.5s infinite;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.12) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
 }
 
-/* Subtle float animation */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-4px); }
-}
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-/* Luxury Dark Aesthetic Classes */
-.luxury-card {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(17, 24, 39, 0.85) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5);
+.ambient-glow-orb-blue {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
 }
 
-.luxury-card-hover {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.luxury-card-hover:hover {
-  transform: translateY(-2px);
-  border-color: rgba(99, 102, 241, 0.3);
-  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.6), 0 0 20px -2px rgba(99, 102, 241, 0.15);
-}
-
-.luxury-glow-amber {
-  box-shadow: 0 0 30px -5px rgba(245, 158, 11, 0.3);
+.ambient-glow-orb-amber {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+  filter: blur(75px);
+  pointer-events: none;
 }
 
-.luxury-glow-indigo {
-  box-shadow: 0 0 30px -5px rgba(99, 102, 241, 0.3);
-}
-
-.gold-gradient-text {
-  background: linear-gradient(135deg, #fde68a 0%, #f59e0b 50%, #d97706 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.silver-gradient-text {
-  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #94a3b8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-
-/* Micro pulse glow */
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
-}
-.animate-pulse-glow {
-  animation: pulseGlow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+/* Native iOS Floating Bottom Dock */
+.ios-floating-dock {
+  background: rgba(18, 18, 24, 0.82);
+  backdrop-filter: blur(36px) saturate(200%);
+  -webkit-backdrop-filter: blur(36px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(255, 255, 255, 0.1) inset;
 }

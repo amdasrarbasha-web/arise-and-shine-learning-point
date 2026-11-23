@@ -9,7 +9,8 @@ import {
   Smartphone,
   Clock,
   ChevronRight,
-  ExternalLink
+  ExternalLink,
+  Shield
 } from 'lucide-react';
 
 export default function Navbar({ 
@@ -23,150 +24,131 @@ export default function Navbar({
   isStandaloneApp 
 }) {
   return (
-    <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/80 shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-all">
-      {/* Top Luxury Micro-Bar */}
-      <div className="bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 text-white text-[11px] py-1.5 px-4 sm:px-8 border-b border-white/5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-          {/* Left: Campus Badge & Timings */}
-          <div className="flex items-center space-x-3 overflow-hidden text-ellipsis whitespace-nowrap">
-            <span className="inline-flex items-center gap-1.5 text-amber-400 font-extrabold uppercase tracking-widest text-[10px] shrink-0 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+    <header className="sticky top-0 z-40 bg-black/75 backdrop-blur-2xl border-b border-white/10 transition-all">
+      {/* Top Apple Style Micro Notification Strip */}
+      <div className="bg-white/[0.03] text-neutral-300 text-[11px] py-1.5 px-4 sm:px-6 border-b border-white/5">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
+          {/* Left: Campus Info */}
+          <div className="flex items-center space-x-2.5 overflow-hidden text-ellipsis whitespace-nowrap">
+            <span className="inline-flex items-center gap-1.5 text-amber-400 font-extrabold uppercase tracking-widest text-[9px] bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
               <span>Melvisharam Campus</span>
             </span>
 
-            <span className="text-slate-700 hidden sm:inline">|</span>
+            <span className="text-neutral-700 hidden sm:inline">|</span>
 
-            <div className="hidden sm:flex items-center space-x-1.5 text-slate-300">
-              <Clock className="w-3 h-3 text-indigo-400 shrink-0" />
-              <span>Evening Tuition: 5:00 PM – 9:30 PM (LKG to 12th)</span>
-            </div>
-
-            <span className="text-slate-700 hidden lg:inline">|</span>
-
-            <a 
-              href="https://maps.app.goo.gl/HvDyLK4yPX7bpAeF9?g_st=ic" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hidden lg:flex items-center space-x-1 text-slate-400 hover:text-amber-400 transition"
-            >
-              <MapPin className="w-3 h-3 text-rose-400 shrink-0" />
-              <span>Center Location on Google Maps</span>
-              <ExternalLink className="w-2.5 h-2.5 ml-0.5 opacity-60" />
-            </a>
+            <span className="hidden sm:inline text-neutral-400 text-[11px]">
+              Evening Tuition: 5:00 PM – 9:30 PM (LKG to 12th)
+            </span>
           </div>
 
-          {/* Right: Hotline & Get App */}
+          {/* Right: Helpline & App Link */}
           <div className="flex items-center space-x-3 shrink-0">
-            <div className="flex items-center space-x-1.5 text-slate-300 text-xs font-semibold">
+            <div className="flex items-center space-x-1.5 text-neutral-300 text-xs font-semibold">
               <Phone className="w-3 h-3 text-emerald-400 shrink-0" />
-              <a href="tel:6379840006" className="hover:text-amber-400 transition">6379840006</a>
-              <span className="text-slate-600">/</span>
-              <a href="tel:9842385666" className="hover:text-amber-400 transition">9842385666</a>
+              <a href="tel:6379840006" className="hover:text-white transition">6379840006</a>
+              <span className="text-neutral-600">/</span>
+              <a href="tel:9842385666" className="hover:text-white transition">9842385666</a>
             </div>
 
             {!isStandaloneApp && (
               <button
                 type="button"
                 onClick={onOpenInstallModal}
-                className="bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 px-2.5 py-0.5 rounded-full text-[10px] font-black flex items-center gap-1 shadow-sm transition hover:scale-105 cursor-pointer"
+                className="bg-white hover:bg-neutral-200 text-black px-2.5 py-0.5 rounded-full text-[10px] font-black flex items-center gap-1 transition active:scale-95 cursor-pointer shadow-sm"
               >
                 <Smartphone className="w-3 h-3" />
-                <span className="hidden xs:inline">Install App</span>
-                <span className="xs:hidden">App</span>
+                <span className="hidden sm:inline">Get App</span>
+                <span className="sm:hidden">App</span>
               </button>
             )}
           </div>
         </div>
       </div>
 
-      {/* Main Brand & Actions Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex items-center justify-between gap-3 text-white">
+      {/* Main Apple Cupertino Navigation Bar */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
         {/* Brand Logo & Name */}
         <div 
-          onClick={() => setCurrentPortal(currentPortal === 'admin' ? 'admin' : 'student')} 
+          onClick={() => setCurrentPortal('student')} 
           className="flex items-center space-x-3 cursor-pointer group min-w-0"
         >
           <div className="relative shrink-0">
             <img 
               src="/logo.png" 
               alt="Arise & Shine Logo" 
-              className="w-10 h-10 sm:w-12 sm:h-12 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(245,158,11,0.3)]" 
+              className="w-10 h-10 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_12px_rgba(255,255,255,0.25)]" 
             />
-            <div className="absolute -inset-1 bg-amber-400/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
           </div>
 
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-lg sm:text-2xl font-black tracking-tight text-white font-heading">
-                ARISE <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">&</span> SHINE
+              <span className="text-lg sm:text-xl font-black tracking-tight text-white font-heading">
+                ARISE & SHINE
               </span>
-              <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 text-indigo-300 border border-indigo-500/30 hidden sm:inline-block">
+              <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-white/10 text-neutral-300 border border-white/10 hidden sm:inline-block">
                 Learning Point
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 font-medium truncate hidden sm:block">
-              {currentPortal === 'admin' ? 'Administrative Control Center & Center Director Desk' : 'Center of Academic Excellence • Coaching LKG to 12th Std'}
-            </p>
-            <p className="text-[10px] font-bold text-amber-400 truncate sm:hidden">
-              {currentPortal === 'admin' ? 'Admin Portal' : 'Student Portal'}
+            <p className="text-[11px] text-neutral-400 font-medium truncate hidden sm:block">
+              Tuition & Academic Excellence • Melvisharam
             </p>
           </div>
         </div>
 
-        {/* Right side actions */}
-        <div className="flex items-center space-x-2.5 shrink-0">
-          {currentPortal === 'student' ? (
-            activeStudent && (
-              <div className="flex items-center space-x-2">
-                <div className="flex items-center space-x-2.5 bg-slate-900/80 px-3 py-1.5 rounded-2xl border border-slate-800 shadow-inner max-w-[170px] sm:max-w-none">
-                  <img
-                    src={activeStudent.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${activeStudent.id}`}
-                    alt={activeStudent.name}
-                    className="w-7 h-7 rounded-xl object-cover border border-amber-400 shrink-0"
-                  />
-                  <div className="min-w-0 text-left">
-                    <p className="text-xs font-bold text-white truncate leading-none">
-                      {activeStudent.name}
-                    </p>
-                    <span className="text-[10px] font-mono font-semibold text-amber-400">
-                      {activeStudent.id}
-                    </span>
-                  </div>
-                </div>
+        {/* Portal Switcher & User Actions */}
+        <div className="flex items-center space-x-2 shrink-0">
+          {/* Apple Segmented Switcher for Portals */}
+          <div className="apple-segmented-track flex items-center text-xs font-semibold">
+            <button
+              onClick={() => setCurrentPortal('student')}
+              className={`px-3 py-1.5 rounded-full transition cursor-pointer ${
+                currentPortal === 'student' ? 'apple-segmented-item-active' : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              Student Portal
+            </button>
+            <button
+              onClick={() => setCurrentPortal('admin')}
+              className={`px-3 py-1.5 rounded-full transition cursor-pointer flex items-center gap-1 ${
+                currentPortal === 'admin' ? 'apple-segmented-item-active' : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              <Shield className="w-3 h-3 text-amber-400" />
+              <span>Admin</span>
+            </button>
+          </div>
 
-                <button
-                  type="button"
-                  onClick={onStudentLogout}
-                  className="px-3 py-1.5 text-xs text-rose-400 hover:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 rounded-xl border border-rose-500/30 transition font-bold flex items-center gap-1.5 cursor-pointer active:scale-95"
-                  title="Sign Out of Student Account"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Logout</span>
-                </button>
+          {/* Logged in student badge */}
+          {currentPortal === 'student' && activeStudent && (
+            <div className="flex items-center space-x-1.5 ml-2">
+              <div className="hidden md:flex items-center space-x-2 bg-white/5 px-2.5 py-1 rounded-full border border-white/10">
+                <img 
+                  src={activeStudent.photo || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300"} 
+                  alt={activeStudent.name}
+                  className="w-5 h-5 rounded-full object-cover border border-white/20"
+                />
+                <span className="text-xs font-bold text-white truncate max-w-[100px]">{activeStudent.name}</span>
               </div>
-            )
-          ) : (
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-2 px-3 py-1.5 bg-gradient-to-r from-amber-500/10 to-indigo-500/10 text-amber-400 rounded-2xl text-xs font-black border border-amber-400/30 shadow-xs">
-                <ShieldCheck className="w-4 h-4 text-amber-400" />
-                <span>Admin Console</span>
-                {isAdminLoggedIn && (
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                )}
-              </div>
-
-              {isAdminLoggedIn && (
-                <button
-                  type="button"
-                  onClick={onAdminLogout}
-                  className="px-3 py-1.5 text-xs text-rose-400 hover:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 rounded-xl border border-rose-500/30 transition font-bold flex items-center gap-1 cursor-pointer active:scale-95"
-                  title="Exit Admin Session"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Logout</span>
-                </button>
-              )}
+              <button
+                onClick={onStudentLogout}
+                className="p-1.5 text-rose-400 hover:text-rose-300 rounded-full bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition text-xs font-bold cursor-pointer"
+                title="Sign Out"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+              </button>
             </div>
+          )}
+
+          {/* Admin Logged in badge */}
+          {currentPortal === 'admin' && isAdminLoggedIn && (
+            <button
+              onClick={onAdminLogout}
+              className="p-1.5 text-rose-400 hover:text-rose-300 rounded-full bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition text-xs font-bold cursor-pointer ml-1"
+              title="Exit Admin"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+            </button>
           )}
         </div>
       </div>
